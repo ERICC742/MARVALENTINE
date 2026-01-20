@@ -250,8 +250,8 @@ button{
 
 <script>
 function startPage(){
-    document.getElementById("startOverlay").style.display="none";
-    document.getElementById("music").play();
+    document.getElementById("startOverlay").style.display = "none";
+    document.getElementById("music").play().catch(()=>{}); // music starts on click
 }
 
 // Start overlay
@@ -397,5 +397,6 @@ function sparkle(){
 </script>
 </body>
 </html>
+
 
 
