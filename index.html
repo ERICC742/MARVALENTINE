@@ -249,17 +249,40 @@ button{
 </div>
 
 <script>
+// --- Music fade-in immediately on page load ---
+window.addEventListener("load", () => {
+    const audio = document.getElementById("music");
+    audio.volume = 0;
+    audio.play().catch(()=>{});
+    let vol = 0;
+    const fade = setInterval(()=>{
+        vol += 0.01;
+        if(vol >= 1){ vol = 1; clearInterval(fade); }
+        audio.volume = vol;
+    }, 100);
+});
+
+// Start overlay
 function startPage(){
-    
+    document.getElementById("startOverlay").style.display="none";
 }
 
+// Envelope open
 function openLetter(){
-  document.getElementById("startOverlay").style.display="none";
-    // keep existing play if you want user click
+    document.getElementById("envelope").classList.add("open");
+    confetti();
+    setTimeout(()=>{
+        document.getElementById("envelope").style.display="none";
+        document.getElementById("letter").classList.add("open");
+        writeName();
+        hearts();
+        setTimeout(removeLetter,15000);
+    },1000);
 }
 
+// Handwritten name
 function writeName(){
-    const t="Dear Minion,";
+    const t="Dear Makayla,";
     let i=0;
     const el=document.getElementById("nameWrite");
     const x=setInterval(()=>{
@@ -269,6 +292,7 @@ function writeName(){
     },120);
 }
 
+// Remove letter after 15s
 function removeLetter(){
     document.getElementById("letter").style.background="transparent";
     document.getElementById("letter").style.boxShadow="none";
@@ -276,22 +300,22 @@ function removeLetter(){
     slideshow();
 }
 
+// Slideshow 11 photos, 6 seconds each
 function slideshow(){
     let time = 0;
     const duration = 6000; // 6 seconds per photo
     for(let i=1; i<=11; i++){
         setTimeout(()=>show(i), time);
         setTimeout(()=>hide(i), time + duration);
-        time += duration + 200; // 200ms gap for smooth fade
+        time += duration + 200; // smooth fade gap
     }
-
-    // Show final Valentine note after last photo
     setTimeout(()=>{
         document.getElementById("poem").style.display="block";
         typeText();
     }, time);
 }
 
+// Show photo
 function show(i){
     let p=document.getElementById("p"+i);
     p.style.display="block";
@@ -300,14 +324,16 @@ function show(i){
     sparkle();
 }
 
+// Hide photo
 function hide(i){
     let p=document.getElementById("p"+i);
     p.classList.remove("show");
     setTimeout(()=>p.style.display="none",1500);
 }
 
+// Type Valentine message
 function typeText(){
-    const text="Will you be my Valentine? ";
+    const text="Will you be my Valentine? 💜";
     let i=0;
     const el=document.getElementById("typeText");
     const t=setInterval(()=>{
@@ -320,16 +346,19 @@ function typeText(){
     },80);
 }
 
+// Accept / Yes button
 function accept(){
     document.getElementById("poem").style.display="none";
     document.getElementById("final").style.display="block";
 }
 
+// No button runs away
 document.getElementById("noBtn").addEventListener("mouseenter",()=>{
     document.getElementById("noBtn").style.transform=
         `translate(${Math.random()*200-100}px,${Math.random()*150-75}px)`;
 });
 
+// Hearts
 function hearts(){
     setInterval(()=>{
         let h=document.createElement("div");
@@ -342,6 +371,7 @@ function hearts(){
     },600);
 }
 
+// Confetti burst
 function confetti(){
     for(let i=0;i<40;i++){
         let c=document.createElement("div");
@@ -353,14 +383,13 @@ function confetti(){
         c.style.top="0";
         c.style.borderRadius="50%";
         document.body.appendChild(c);
-        c.animate([
-            {transform:"translateY(0)"},
-            {transform:`translateY(${window.innerHeight}px)`}
-        ],{duration:3000+Math.random()*2000});
+        c.animate([{transform:"translateY(0)"},{transform:`translateY(${window.innerHeight}px)`}],
+            {duration:3000+Math.random()*2000});
         setTimeout(()=>c.remove(),5000);
     }
 }
 
+// Sparkles
 function sparkle(){
     for(let i=0;i<15;i++){
         let s=document.createElement("div");
@@ -376,15 +405,4 @@ function sparkle(){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
