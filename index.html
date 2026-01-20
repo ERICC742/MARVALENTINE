@@ -250,28 +250,12 @@ button{
 
 <script>
 function startPage(){
-    window.addEventListener("load", () => 
-    const audio = document.getElementById("music");
-    audio.volume = 0;
-    audio.play().catch(()=>{});
-    let vol = 0;
-    const fade = setInterval(()=>{
-        vol += 0.01;
-        if(vol >= 1){ vol = 1; clearInterval(fade); }
-        audio.volume = vol;
-    }, 100);
+    
 }
 
 function openLetter(){
-    document.getElementById("envelope").classList.add("open");
-    confetti();
-    setTimeout(()=>{
-        document.getElementById("envelope").style.display="none";
-        document.getElementById("letter").classList.add("open");
-        writeName();
-        hearts();
-        setTimeout(removeLetter,15000);
-    },1000);
+  document.getElementById("startOverlay").style.display="none";
+    // keep existing play if you want user click
 }
 
 function writeName(){
@@ -392,6 +376,7 @@ function sparkle(){
 </script>
 </body>
 </html>
+
 
 
 
