@@ -250,9 +250,18 @@ button{
 
 <script>
 function startPage(){
-    document.getElementById("startOverlay").style.display="none";
-    document.getElementById("music").play();
-}
+    window.addEventListener("load", () => {
+    const audio = document.getElementById("music");
+    audio.volume = 0;
+    audio.play().catch(()=>{});
+    let vol = 0;
+    const fade = setInterval(()=>{
+        vol += 0.01;
+        if(vol >= 1){ vol = 1; clearInterval(fade); }
+        audio.volume = vol;
+    }, 100);
+});
+</script>
 
 function openLetter(){
     document.getElementById("envelope").classList.add("open");
@@ -384,6 +393,7 @@ function sparkle(){
 </script>
 </body>
 </html>
+
 
 
 
