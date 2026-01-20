@@ -285,16 +285,19 @@ function removeLetter(){
 }
 
 function slideshow(){
-    let time=0;
-    for(let i=1;i<=11;i++){
-        setTimeout(()=>show(i),time);
-        setTimeout(()=>hide(i),time+6500);
-        time+=6700;
+    let time = 0;
+    const duration = 6000; // 6 seconds per photo
+    for(let i=1; i<=11; i++){
+        setTimeout(()=>show(i), time);
+        setTimeout(()=>hide(i), time + duration);
+        time += duration + 200; // 200ms gap for smooth fade
     }
+
+    // Show final Valentine note after last photo
     setTimeout(()=>{
         document.getElementById("poem").style.display="block";
         typeText();
-    },time);
+    }, time);
 }
 
 function show(i){
@@ -381,6 +384,7 @@ function sparkle(){
 </script>
 </body>
 </html>
+
 
 
 
