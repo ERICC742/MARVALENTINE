@@ -7,97 +7,106 @@
 <title>For Makayla 💜</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
-
-body {
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#f3e8ff,#ede9fe);
     height:100vh;
-    background: linear-gradient(135deg,#f3e8ff,#ede9fe);
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family:'Poppins',sans-serif;
     overflow:hidden;
 }
 
-#startOverlay {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+/* Click overlay */
+#startOverlay{
+    position:fixed;top:0;left:0;width:100%;height:100%;
     background: rgba(240,240,255,0.95);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction: column;
-    z-index: 9999;
+    display:flex;justify-content:center;align-items:center;flex-direction: column;
+    z-index:9999;
+}
+#startOverlay h1{
+    font-family:'Great Vibes', cursive; font-size:48px; color:#7c3aed; margin-bottom:20px;
+}
+#startOverlay button{
+    font-size:22px;padding:15px 30px;background:#a78bfa;color:white;
+    border:none;border-radius:25px;cursor:pointer;
 }
 
-#startOverlay h1 { font-family:'Great Vibes', cursive; font-size:48px; color:#7c3aed; margin-bottom:20px; }
-
-#startOverlay button {
-    font-size:22px;
-    padding:15px 30px;
-    background:#a78bfa;
-    color:white;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-}
-
-.heart-float {
-    position: absolute;
-    bottom: -20px;
-    font-size: 20px;
-    animation: floatUp 8s linear infinite;
-    opacity: 0.7;
-}
-
-@keyframes floatUp { from{transform:translateY(0);} to{transform:translateY(-110vh);} }
-
-.envelope {
-    width: 260px; height:180px;
+/* Envelope */
+.envelope{
+    width:260px;height:180px;
     background:#c4b5fd;
     border-radius:14px;
     position:relative;
     cursor:pointer;
     box-shadow:0 15px 30px rgba(0,0,0,0.25);
     transition: transform 1s ease;
+    display:flex;justify-content:center;align-items:flex-end;
 }
+.envelope.open{ transform: scale(0.8) rotateX(10deg); }
 
-.envelope.open { transform: scale(0); }
+.flap{
+    position:absolute;top:0;width:100%;height:100%;
+    background:#a78bfa;
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    transform-origin: top center;
+    transition: transform 1s ease;
+}
+.envelope.open .flap{ transform: rotateX(180deg); }
 
-.flap { position:absolute; top:0; width:100%; height:100%; background:#a78bfa; clip-path: polygon(0 0, 50% 55%, 100% 0); }
-
-.sticker {
-    position:absolute; width:70px; height:70px;
-    background:#fb7185;
-    border-radius:50%;
+.sticker{
+    position:absolute;width:70px;height:70px;
+    background:#fb7185;border-radius:50%;
     top:55px; left:95px;
-    display:flex; align-items:center; justify-content:center;
-    color:white; font-weight:bold;
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-weight:bold;
 }
 
-.content { display:none; text-align:center; animation:fade 2s ease; }
+/* Letter */
+.letter{
+    width:220px;height:250px;
+    background:white;border-radius:12px;
+    position:absolute;
+    top:180px; left:50%;
+    transform:translate(-50%, -100%);
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 1s ease, opacity 1s ease;
+    opacity:0;
+    padding:20px;
+    text-align:center;
+}
+.letter.open{ transform:translate(-50%,-320px); opacity:1; }
 
-@keyframes fade { from{opacity:0;} to{opacity:1;} }
+/* Hearts */
+.heart-float{
+    position:absolute;bottom:-20px;
+    font-size:20px;
+    animation:floatUp 8s linear infinite;
+    opacity:0.7;
+}
+@keyframes floatUp{from{transform:translateY(0);} to{transform:translateY(-110vh);}}
 
-.bouquet { font-size:90px; animation: pop 1.5s ease infinite alternate; }
+/* Bouquet */
+.bouquet{ font-size:90px; animation: pop 1.5s ease infinite alternate; }
+@keyframes pop{ from{transform:scale(1);} to{transform:scale(1.1);} }
 
-@keyframes pop { from{transform:scale(1);} to{transform:scale(1.1);} }
+/* Photos */
+.photo{ width:200px; border-radius:12px; display:none; margin:15px auto; box-shadow:0 10px 20px rgba(0,0,0,0.2); }
 
-.photo { width:260px; border-radius:15px; display:none; margin:20px auto; box-shadow:0 12px 25px rgba(0,0,0,0.25); }
+/* Poem / Valentine note */
+.poem{
+    background:white;padding:20px;border-radius:15px;display:none;margin:15px auto;
+}
+.poem h1{ font-family:'Great Vibes', cursive; font-size:36px; color:#7c3aed; margin-bottom:10px; }
 
-.poem { background:white; padding:25px; border-radius:20px; max-width:360px; margin:25px auto; display:none; }
+/* Buttons */
+button{ padding:10px 22px; border:none;border-radius:25px; cursor:pointer;margin:6px; }
+.yes{ background:#a78bfa;color:white; }
+.no{ background:#fda4af; position:relative; }
 
-.poem h1 { font-family:'Great Vibes', cursive; font-size:42px; color:#7c3aed; }
-
-.buttons { margin-top:20px; }
-
-button { padding:12px 25px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin:8px; }
-
-.yes { background:#a78bfa; color:white; }
-.no { background:#fda4af; position:relative; }
-
-.final { display:none; font-size:26px; font-weight:bold; color:#7c3aed; margin-top:25px; }
+/* Final Message */
+.final{ display:none; font-size:26px; font-weight:bold; color:#7c3aed; margin-top:20px; }
 </style>
 </head>
 <body>
@@ -106,47 +115,49 @@ button { padding:12px 25px; border:none; border-radius:25px; font-size:16px; cur
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Click to Start Overlay -->
+<!-- Click Overlay -->
 <div id="startOverlay">
     <h1>Makayla 💜</h1>
     <button onclick="startPage()">Click to Start</button>
 </div>
 
 <!-- Envelope -->
-<div class="envelope" id="envelope" onclick="startLove()">
+<div class="envelope" id="envelope" onclick="openLetter()">
     <div class="flap"></div>
-    <div class="sticker">For You </div>
+    <div class="sticker">For You 💜</div>
 </div>
 
-<!-- Main Content -->
-<div class="content" id="content">
-    <div class="bouquet">💐</div>
+<!-- Letter -->
+<div class="letter" id="letter">
+    <!-- Letter content (first) -->
+    <div id="letterContent" style="display:block;">
+        <div class="bouquet">💐</div>
+        <p>Dear Makayla,</p>
+        <p>Every moment with you feels like home.<br>
+           Your smile brightens my darkest days,<br>
+           And your laugh is my favorite sound.<br>
+           I’m grateful for you — today and always.</p>
+    </div>
 
-    <!-- 7 Photos -->
-    <img src="photo1.jpeg" class="photo" id="p1">
-    <img src="photo2.jpeg" class="photo" id="p2">
-    <img src="photo3.jpeg" class="photo" id="p3">
-    <img src="photo4.jpeg" class="photo" id="p4">
-    <img src="photo6.jpeg" class="photo" id="p6">
-    <img src="photo7.jpeg" class="photo" id="p7">
-    <img src="photo8.jpeg" class="photo" id="p8">
+    <!-- Photos -->
+    <img src="photo1.jpg" class="photo" id="p1">
+    <img src="photo2.jpg" class="photo" id="p2">
+    <img src="photo3.jpg" class="photo" id="p3">
+    <img src="photo4.jpg" class="photo" id="p4">
+    <img src="photo5.jpg" class="photo" id="p5">
+    <img src="photo6.jpg" class="photo" id="p6">
+    <img src="photo7.jpg" class="photo" id="p7">
 
-    <!-- Poem -->
+    <!-- Final poem / Valentine note -->
     <div class="poem" id="poem">
-        <h1>Minion 💜</h1>
-        Every moment with you feels like home.<br><br>
-        That beautiful smile brightens my darkest days,<br>
-        and your laugh is my favorite sound.<br><br>
-        I’m grateful for you mi reina.<br><br>
-        <strong>Will you be my Valentine?</strong>
-
-        <div class="buttons">
+        <h1>Will you be my Valentine? 💜</h1>
+        <div>
             <button class="yes" onclick="accept()">Yes 💜</button>
             <button class="no" id="noBtn">No 🙈</button>
         </div>
     </div>
 
-    <!-- Final Message -->
+    <!-- Final message -->
     <div class="final" id="final">
         💜 You just made me the happiest person alive 💜
     </div>
@@ -154,22 +165,29 @@ button { padding:12px 25px; border:none; border-radius:25px; font-size:16px; cur
 
 <script>
 // Start overlay click
-function startPage() {
-    document.getElementById("startOverlay").style.display = "none";
-    const music = document.getElementById("music");
-    music.play();
-    startLove();
+function startPage(){
+    document.getElementById("startOverlay").style.display="none";
+    document.getElementById("music").play();
 }
 
-// Envelope click → animations
-function startLove() {
-    const envelope = document.getElementById("envelope");
-    const content = document.getElementById("content");
+// Envelope click → open letter
+function openLetter(){
+    document.getElementById("envelope").classList.add("open");
+    const letter = document.getElementById("letter");
+    setTimeout(()=>{
+        letter.classList.add("open");
 
-    envelope.classList.add("open");
-    setTimeout(()=>{ envelope.style.display="none"; content.style.display="block"; }, 800);
+        // Letter content already visible (stay 15s)
+        startHearts();
 
-    // Hearts
+        // Start photo slideshow AFTER 15 seconds
+        setTimeout(startSlideshow, 15000);
+
+    }, 1000);
+}
+
+// Hearts animation
+function startHearts(){
     setInterval(()=>{
         let heart=document.createElement("div");
         heart.className="heart-float";
@@ -179,18 +197,22 @@ function startLove() {
         document.body.appendChild(heart);
         setTimeout(()=>heart.remove(),8000);
     },500);
+}
 
-    // 7 photo slideshow
-    let startTime = 1000;
-    let duration = 4000;
+// Photo slideshow
+function startSlideshow(){
+    let startTime = 0;
+    let duration = 8000; // 8 seconds per photo
     for(let i=1;i<=7;i++){
         setTimeout(()=>showPhoto("p"+i), startTime);
         setTimeout(()=>hidePhoto("p"+i), startTime+duration);
-        startTime += duration+200;
+        startTime += duration + 200;
     }
 
-    // Show poem
-    setTimeout(()=>{ document.getElementById("poem").style.display="block"; }, startTime);
+    // Show final poem after all photos
+    setTimeout(()=>{
+        document.getElementById("poem").style.display = "block";
+    }, startTime);
 }
 
 function showPhoto(id){ document.getElementById(id).style.display="block"; }
@@ -212,7 +234,5 @@ function moveButton(){
     noBtn.style.transform=`translate(${x}px, ${y}px)`;
 }
 </script>
-
 </body>
 </html>
-
