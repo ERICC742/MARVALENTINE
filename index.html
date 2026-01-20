@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Makayla 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
+
+body {
+    height:100vh;
+    background: linear-gradient(135deg,#f3e8ff,#ede9fe);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+}
+
+#startOverlay {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(240,240,255,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+#startOverlay h1 { font-family:'Great Vibes', cursive; font-size:48px; color:#7c3aed; margin-bottom:20px; }
+
+#startOverlay button {
+    font-size:22px;
+    padding:15px 30px;
+    background:#a78bfa;
+    color:white;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+}
+
+.heart-float {
+    position: absolute;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 8s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes floatUp { from{transform:translateY(0);} to{transform:translateY(-110vh);} }
+
+.envelope {
+    width: 260px; height:180px;
+    background:#c4b5fd;
+    border-radius:14px;
+    position:relative;
+    cursor:pointer;
+    box-shadow:0 15px 30px rgba(0,0,0,0.25);
+    transition: transform 1s ease;
+}
+
+.envelope.open { transform: scale(0); }
+
+.flap { position:absolute; top:0; width:100%; height:100%; background:#a78bfa; clip-path: polygon(0 0, 50% 55%, 100% 0); }
+
+.sticker {
+    position:absolute; width:70px; height:70px;
+    background:#fb7185;
+    border-radius:50%;
+    top:55px; left:95px;
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-weight:bold;
+}
+
+.content { display:none; text-align:center; animation:fade 2s ease; }
+
+@keyframes fade { from{opacity:0;} to{opacity:1;} }
+
+.bouquet { font-size:90px; animation: pop 1.5s ease infinite alternate; }
+
+@keyframes pop { from{transform:scale(1);} to{transform:scale(1.1);} }
+
+.photo { width:260px; border-radius:15px; display:none; margin:20px auto; box-shadow:0 12px 25px rgba(0,0,0,0.25); }
+
+.poem { background:white; padding:25px; border-radius:20px; max-width:360px; margin:25px auto; display:none; }
+
+.poem h1 { font-family:'Great Vibes', cursive; font-size:42px; color:#7c3aed; }
+
+.buttons { margin-top:20px; }
+
+button { padding:12px 25px; border:none; border-radius:25px; font-size:16px; cursor:pointer; margin:8px; }
+
+.yes { background:#a78bfa; color:white; }
+.no { background:#fda4af; position:relative; }
+
+.final { display:none; font-size:26px; font-weight:bold; color:#7c3aed; margin-top:25px; }
+</style>
+</head>
+<body>
+
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Click to Start Overlay -->
+<div id="startOverlay">
+    <h1>Makayla 💜</h1>
+    <button onclick="startPage()">Click to Start</button>
+</div>
+
+<!-- Envelope -->
+<div class="envelope" id="envelope" onclick="startLove()">
+    <div class="flap"></div>
+    <div class="sticker">For You </div>
+</div>
+
+<!-- Main Content -->
+<div class="content" id="content">
+    <div class="bouquet">💐</div>
+
+    <!-- 7 Photos -->
+    <img src="photo1.jpg" class="photo" id="p1">
+    <img src="photo2.jpg" class="photo" id="p2">
+    <img src="photo3.jpg" class="photo" id="p3">
+    <img src="photo4.jpg" class="photo" id="p4">
+    <img src="photo6.jpg" class="photo" id="p6">
+    <img src="photo7.jpg" class="photo" id="p7">
+    <img src="photo8.jpg" class="photo" id="p8">
+
+    <!-- Poem -->
+    <div class="poem" id="poem">
+        <h1>Minion 💜</h1>
+        Every moment with you feels like home.<br><br>
+        That beautiful smile brightens my darkest days,<br>
+        and your laugh is my favorite sound.<br><br>
+        I’m grateful for you mi reina.<br><br>
+        <strong>Will you be my Valentine?</strong>
+
+        <div class="buttons">
+            <button class="yes" onclick="accept()">Yes 💜</button>
+            <button class="no" id="noBtn">No 🙈</button>
+        </div>
+    </div>
+
+    <!-- Final Message -->
+    <div class="final" id="final">
+        💜 You just made me the happiest person alive 💜
+    </div>
+</div>
+
+<script>
+// Start overlay click
+function startPage() {
+    document.getElementById("startOverlay").style.display = "none";
+    const music = document.getElementById("music");
+    music.play();
+    startLove();
+}
+
+// Envelope click → animations
+function startLove() {
+    const envelope = document.getElementById("envelope");
+    const content = document.getElementById("content");
+
+    envelope.classList.add("open");
+    setTimeout(()=>{ envelope.style.display="none"; content.style.display="block"; }, 800);
+
+    // Hearts
+    setInterval(()=>{
+        let heart=document.createElement("div");
+        heart.className="heart-float";
+        heart.innerHTML="💜";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*20+15)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),8000);
+    },500);
+
+    // 7 photo slideshow
+    let startTime = 1000;
+    let duration = 4000;
+    for(let i=1;i<=7;i++){
+        setTimeout(()=>showPhoto("p"+i), startTime);
+        setTimeout(()=>hidePhoto("p"+i), startTime+duration);
+        startTime += duration+200;
+    }
+
+    // Show poem
+    setTimeout(()=>{ document.getElementById("poem").style.display="block"; }, startTime);
+}
+
+function showPhoto(id){ document.getElementById(id).style.display="block"; }
+function hidePhoto(id){ document.getElementById(id).style.display="none"; }
+
+// Accept Yes
+function accept(){
+    document.getElementById("poem").style.display="none";
+    document.getElementById("final").style.display="block";
+}
+
+// Runaway No button
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+function moveButton(){
+    const x=Math.random()*200-100;
+    const y=Math.random()*150-75;
+    noBtn.style.transform=`translate(${x}px, ${y}px)`;
+}
+</script>
+
+</body>
+</html>
