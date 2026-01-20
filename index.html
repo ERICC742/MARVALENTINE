@@ -5,292 +5,375 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Makayla 💜</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
     font-family:'Poppins',sans-serif;
-    background:linear-gradient(135deg,#f3e8ff,#ede9fe);
     height:100vh;
+    overflow:hidden;
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden;
+    background:#f3e8ff;
+    animation: glow 8s ease-in-out infinite;
 }
 
-/* Click overlay */
+@keyframes glow{
+    0%{background:#f3e8ff;}
+    50%{background:#ede9fe;}
+    100%{background:#f3e8ff;}
+}
+
+/* START SCREEN */
 #startOverlay{
-    position:fixed;top:0;left:0;width:100%;height:100%;
-    background: rgba(240,240,255,0.95);
-    display:flex;justify-content:center;align-items:center;flex-direction: column;
+    position:fixed;
+    inset:0;
+    background:rgba(245,240,255,.95);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
     z-index:9999;
 }
+
 #startOverlay h1{
-    font-family:'Great Vibes', cursive; font-size:48px; color:#7c3aed; margin-bottom:20px;
-}
-#startOverlay button{
-    font-size:22px;padding:15px 30px;background:#a78bfa;color:white;
-    border:none;border-radius:25px;cursor:pointer;
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    color:#7c3aed;
+    margin-bottom:20px;
 }
 
-/* Envelope */
+#startOverlay button{
+    padding:15px 30px;
+    font-size:22px;
+    border:none;
+    border-radius:30px;
+    background:#a78bfa;
+    color:white;
+    cursor:pointer;
+}
+
+/* ENVELOPE */
 .envelope{
-    width:260px;height:180px;
+    width:260px;
+    height:180px;
     background:#c4b5fd;
-    border-radius:14px;
+    border-radius:16px;
     position:relative;
     cursor:pointer;
-    box-shadow:0 15px 30px rgba(0,0,0,0.25);
-    transition: transform 1s ease;
-    display:flex;justify-content:center;align-items:flex-end;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
-.envelope.open{ transform: scale(0.8) rotateX(10deg); }
 
 .flap{
-    position:absolute;top:0;width:100%;height:100%;
+    position:absolute;
+    top:0;
+    width:100%;
+    height:100%;
     background:#a78bfa;
-    clip-path: polygon(0 0, 50% 55%, 100% 0);
-    transform-origin: top center;
-    transition: transform 1s ease;
+    clip-path: polygon(0 0,50% 55%,100% 0);
+    transform-origin:top;
+    transition:1s;
 }
-.envelope.open .flap{ transform: rotateX(180deg); }
+
+.envelope.open .flap{
+    transform:rotateX(180deg);
+}
 
 .sticker{
-    position:absolute;width:70px;height:70px;
-    background:#fb7185;border-radius:50%;
-    top:55px; left:95px;
-    display:flex;align-items:center;justify-content:center;
-    color:white;font-weight:bold;
+    position:absolute;
+    width:70px;height:70px;
+    background:#fb7185;
+    border-radius:50%;
+    top:55px;left:95px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-weight:bold;
+    transition:.6s;
 }
 
-/* Letter */
+.envelope.open .sticker{
+    transform:scale(0);
+    opacity:0;
+}
+
+/* LETTER */
 .letter{
+    position:absolute;
     width:260px;
     min-height:250px;
-    background: #fffdf5; /* soft paper color */
-    border-radius: 15px;
-    position:absolute;
-    top:180px; left:50%;
-    transform:translate(-50%, -100%);
-    box-shadow:0 15px 25px rgba(0,0,0,0.25);
-    transition: transform 1s ease, opacity 1s ease;
-    opacity:0;
+    background:#fffdf5;
+    border-radius:16px;
     padding:25px;
     text-align:center;
-    font-family: 'Great Vibes', cursive;
-    font-size: 20px;
-    line-height: 1.5;
-}
-
-/* When letter opens, center screen */
-.letter.open{
-    top:50%;
-    transform: translate(-50%, -50%);
-    opacity:1;
-}
-
-/* Hearts floating */
-.heart-float{
-    position:absolute;bottom:-20px;
+    font-family:'Great Vibes',cursive;
     font-size:20px;
-    animation:floatUp 8s linear infinite;
-    opacity:0.7;
+    box-shadow:0 20px 35px rgba(0,0,0,.25);
+    opacity:0;
+    top:180px;
+    left:50%;
+    transform:translate(-50%,-100%);
+    transition:1s;
 }
-@keyframes floatUp{from{transform:translateY(0);} to{transform:translateY(-110vh);}}
 
-/* Confetti style is handled in JS */
+.letter.open{
+    opacity:1;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
 
-/* Photos as hearts */
+/* PHOTOS */
 .photo{
-    width:200px;
-    height:200px;
-    object-fit: cover;
+    width:300px;
+    max-width:90%;
     display:none;
-    margin:15px auto;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
-    clip-path: polygon(
-        50% 0%, 
-        61% 5%, 
-        70% 15%, 
-        75% 25%, 
-        80% 40%, 
-        75% 55%, 
-        60% 70%, 
-        50% 80%, 
-        40% 70%, 
-        25% 55%, 
-        20% 40%, 
-        25% 25%, 
-        30% 15%, 
-        39% 5%
-    );
+    margin:20px auto;
+    object-fit:contain;
+    opacity:0;
+    transition:opacity 1.5s;
 }
 
-/* Final poem / Valentine note */
+.photo.show{opacity:1;}
+
+/* POEM */
 .poem{
-    background:white;padding:20px;border-radius:15px;display:none;margin:15px auto;
+    display:none;
+    background:white;
+    padding:20px;
+    border-radius:15px;
 }
-.poem h1{ font-family:'Great Vibes', cursive; font-size:36px; color:#7c3aed; margin-bottom:10px; }
 
-/* Buttons */
-button{ padding:10px 22px; border:none;border-radius:25px; cursor:pointer;margin:6px; }
-.yes{ background:#a78bfa;color:white; }
-.no{ background:#fda4af; position:relative; }
+.poem h1{
+    font-family:'Great Vibes',cursive;
+    font-size:36px;
+    color:#7c3aed;
+}
 
-/* Final message */
-.final{ display:none; font-size:26px; font-weight:bold; color:#7c3aed; margin-top:20px; }
+/* BUTTONS */
+button{
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+}
+
+.yes{background:#a78bfa;color:white;}
+.no{background:#fda4af;position:relative;}
+
+.final{
+    display:none;
+    font-size:26px;
+    color:#7c3aed;
+    margin-top:15px;
+}
+
+/* FLOATING HEARTS */
+.heart{
+    position:absolute;
+    bottom:-20px;
+    animation:floatUp 8s linear infinite;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0);}
+    to{transform:translateY(-110vh);}
+}
+
+@media(max-width:600px){
+    .letter{width:90%;}
+    .photo{width:90%;}
+}
 </style>
 </head>
+
 <body>
 
 <audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
+    <source src="music.mp3">
 </audio>
 
-<!-- Click Overlay -->
+<audio id="shutter">
+    <source src="camera.mp3">
+</audio>
+
 <div id="startOverlay">
     <h1>Makayla 💜</h1>
     <button onclick="startPage()">Click to Start</button>
 </div>
 
-<!-- Envelope -->
 <div class="envelope" id="envelope" onclick="openLetter()">
     <div class="flap"></div>
-    <div class="sticker">For You </div>
+    <div class="sticker">For You</div>
 </div>
 
-<!-- Letter -->
 <div class="letter" id="letter">
 
-    <!-- Letter content first -->
-    <div id="letterContent">
-        <div class="bouquet">💐</div>
-        <p>Dear Makayla,</p>
-        <p>Every moment with you feels like home.<br>
-           Your smile brightens my darkest days,<br>
-           And your laugh is my favorite sound.<br>
-           I’m grateful for you — today and always.</p>
-    </div>
+    <p id="nameWrite"></p>
+    <p>
+        Every moment with you feels special.<br>
+        Your smile lights up my world,<br>
+        and my favorite memories always include you.
+    </p>
 
-    <!-- Photos -->
-    <img src="photo1.jpeg" class="photo" id="p1">
-    <img src="photo2.jpeg" class="photo" id="p2">
-    <img src="photo3.jpeg" class="photo" id="p3">
-    <img src="photo4.jpeg" class="photo" id="p4">
-    <img src="photo6.jpeg" class="photo" id="p6">
-    <img src="photo7.jpeg" class="photo" id="p7">
-    <img src="photo8.jpeg" class="photo" id="p8">
+    <img src="photo1.jpg" class="photo" id="p1">
+    <img src="photo2.jpg" class="photo" id="p2">
+    <img src="photo3.jpg" class="photo" id="p3">
+    <img src="photo4.jpg" class="photo" id="p4">
+    <img src="photo5.jpg" class="photo" id="p5">
+    <img src="photo6.jpg" class="photo" id="p6">
+    <img src="photo7.jpg" class="photo" id="p7">
 
-    <!-- Final Valentine note -->
     <div class="poem" id="poem">
-        <h1>Will you be my Valentine? </h1>
-        <div>
+        <h1 id="typeText"></h1>
+        <div id="buttons" style="display:none;">
             <button class="yes" onclick="accept()">Yes 💜</button>
             <button class="no" id="noBtn">No 🙈</button>
         </div>
     </div>
 
-    <!-- Final message -->
     <div class="final" id="final">
-         You just made me the happiest person alive !!
+        💜 You just made me the happiest person alive 💜
     </div>
+
 </div>
 
 <script>
-// Start overlay click
 function startPage(){
     document.getElementById("startOverlay").style.display="none";
     document.getElementById("music").play();
 }
 
-// Envelope click → open letter + confetti
 function openLetter(){
     document.getElementById("envelope").classList.add("open");
-    confettiBurst(); // subtle confetti
-
+    confetti();
     setTimeout(()=>{
         document.getElementById("envelope").style.display="none";
-        const letter = document.getElementById("letter");
-        letter.classList.add("open");
-
-        // Start hearts floating
-        startHearts();
-
-        // Start photo slideshow after 15 seconds
-        setTimeout(startSlideshow,15000);
-
+        document.getElementById("letter").classList.add("open");
+        writeName();
+        hearts();
+        setTimeout(removeLetter,15000);
     },1000);
 }
 
-// Hearts floating
-function startHearts(){
-    setInterval(()=>{
-        let heart=document.createElement("div");
-        heart.className="heart-float";
-        heart.innerHTML="💜";
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(Math.random()*20+15)+"px";
-        document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),8000);
-    },500);
+function writeName(){
+    const t="Dear Makayla,";
+    let i=0;
+    const el=document.getElementById("nameWrite");
+    const x=setInterval(()=>{
+        el.innerHTML+=t.charAt(i);
+        i++;
+        if(i>=t.length) clearInterval(x);
+    },120);
 }
 
-// Confetti burst
-function confettiBurst(){
-    for(let i=0;i<50;i++){
-        let confetti = document.createElement("div");
-        confetti.style.position="absolute";
-        confetti.style.width="8px";
-        confetti.style.height="8px";
-        confetti.style.background=["#f87171","#fb7185","#a78bfa","#c4b5fd","#fcd34d"][Math.floor(Math.random()*5)];
-        confetti.style.left=Math.random()*100+"vw";
-        confetti.style.top="0px";
-        confetti.style.opacity=1;
-        confetti.style.borderRadius="50%";
-        document.body.appendChild(confetti);
-
-        let fall = confetti.animate([
-            { transform: `translateY(0px) rotate(0deg)` },
-            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*360}deg)` }
-        ], {
-            duration: 3000 + Math.random()*2000,
-            iterations: 1,
-            easing: "ease-out"
-        });
-        fall.onfinish = () => confetti.remove();
-    }
+function removeLetter(){
+    document.getElementById("letter").style.background="transparent";
+    document.getElementById("letter").style.boxShadow="none";
+    document.querySelectorAll("p").forEach(p=>p.style.display="none");
+    slideshow();
 }
 
-// Photo slideshow
-function startSlideshow(){
-    let startTime = 0;
-    let duration = 8000; // 8s per photo
+function slideshow(){
+    let time=0;
     for(let i=1;i<=7;i++){
-        setTimeout(()=>showPhoto("p"+i), startTime);
-        setTimeout(()=>hidePhoto("p"+i), startTime+duration);
-        startTime += duration+200;
+        setTimeout(()=>show(i),time);
+        setTimeout(()=>hide(i),time+8000);
+        time+=8200;
     }
-    setTimeout(()=>{document.getElementById("poem").style.display="block";}, startTime);
+    setTimeout(()=>{
+        document.getElementById("poem").style.display="block";
+        typeText();
+    },time);
 }
 
-function showPhoto(id){ document.getElementById(id).style.display="block"; }
-function hidePhoto(id){ document.getElementById(id).style.display="none"; }
+function show(i){
+    let p=document.getElementById("p"+i);
+    p.style.display="block";
+    setTimeout(()=>p.classList.add("show"),50);
+    document.getElementById("shutter").play();
+    sparkle();
+}
 
-// Accept Yes
+function hide(i){
+    let p=document.getElementById("p"+i);
+    p.classList.remove("show");
+    setTimeout(()=>p.style.display="none",1500);
+}
+
+function typeText(){
+    const text="Will you be my Valentine? 💜";
+    let i=0;
+    const el=document.getElementById("typeText");
+    const t=setInterval(()=>{
+        el.innerHTML+=text.charAt(i);
+        i++;
+        if(i>=text.length){
+            clearInterval(t);
+            document.getElementById("buttons").style.display="block";
+        }
+    },80);
+}
+
 function accept(){
     document.getElementById("poem").style.display="none";
     document.getElementById("final").style.display="block";
 }
 
-// Runaway No button
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseenter", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
-function moveButton(){
-    const x=Math.random()*200-100;
-    const y=Math.random()*150-75;
-    noBtn.style.transform=`translate(${x}px, ${y}px)`;
+document.getElementById("noBtn").addEventListener("mouseenter",()=>{
+    document.getElementById("noBtn").style.transform=
+        `translate(${Math.random()*200-100}px,${Math.random()*150-75}px)`;
+});
+
+function hearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="💜";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(Math.random()*20+15)+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),8000);
+    },600);
+}
+
+function confetti(){
+    for(let i=0;i<40;i++){
+        let c=document.createElement("div");
+        c.style.position="absolute";
+        c.style.width="8px";
+        c.style.height="8px";
+        c.style.background=["#fb7185","#a78bfa","#c4b5fd","#fde68a"][Math.floor(Math.random()*4)];
+        c.style.left=Math.random()*100+"vw";
+        c.style.top="0";
+        c.style.borderRadius="50%";
+        document.body.appendChild(c);
+        c.animate([
+            {transform:"translateY(0)"},
+            {transform:`translateY(${window.innerHeight}px)`}
+        ],{duration:3000+Math.random()*2000});
+        setTimeout(()=>c.remove(),5000);
+    }
+}
+
+function sparkle(){
+    for(let i=0;i<15;i++){
+        let s=document.createElement("div");
+        s.innerHTML="✨";
+        s.style.position="absolute";
+        s.style.left=Math.random()*100+"vw";
+        s.style.top=Math.random()*100+"vh";
+        document.body.appendChild(s);
+        s.animate([{opacity:1},{opacity:0}],{duration:1500});
+        setTimeout(()=>s.remove(),1500);
+    }
 }
 </script>
 </body>
 </html>
+
+
