@@ -107,9 +107,7 @@ button:active {
 <!-- 1 PLAYER LOCKED -->
 <div id="lockedScreen" class="screen">
   <div class="title">ACCESS DENIED</div>
-  <p style="font-size:0.6rem;margin:20px;">
-    NO LONGER AVAILABLE
-  </p>
+  <p style="font-size:0.6rem;margin:20px;">NO LONGER AVAILABLE</p>
   <button id="returnBtn">RETURN TO MAIN MENU</button>
 </div>
 
@@ -121,15 +119,47 @@ button:active {
   <button id="letterBtn">A LETTER</button>
   <button id="gameBtn">GAME</button>
   <button id="videoBtn">VIDEO</button>
-  
-  <!-- TOP 5 SONGS LIST (HIDDEN BY DEFAULT) -->
-  <div id="topSongsList" style="margin-top:20px; display:none; flex-direction: column; gap:10px;">
+</div>
+
+<!-- MEMORIES PAGE -->
+<div id="memoriesScreen" class="screen">
+  <div class="title">MEMORIES</div>
+  <p>Here are all our favorite memories together!</p>
+  <button class="backBtn">RETURN</button>
+</div>
+
+<!-- TOP 5 SONGS PAGE -->
+<div id="topSongsScreen" class="screen">
+  <div class="title">TOP 5 SONGS</div>
+  <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
     <button class="songBtn">Song 1</button>
     <button class="songBtn">Song 2</button>
     <button class="songBtn">Song 3</button>
     <button class="songBtn">Song 4</button>
     <button class="songBtn">Song 5</button>
   </div>
+  <button class="backBtn">RETURN</button>
+</div>
+
+<!-- A LETTER PAGE -->
+<div id="letterScreen" class="screen">
+  <div class="title">A LETTER</div>
+  <p>Dear Love, here is a special letter for you...</p>
+  <button class="backBtn">RETURN</button>
+</div>
+
+<!-- GAME PAGE -->
+<div id="gameScreen" class="screen">
+  <div class="title">GAME</div>
+  <p>Play our mini Valentine’s game here!</p>
+  <button class="backBtn">RETURN</button>
+</div>
+
+<!-- VIDEO PAGE -->
+<div id="videoScreen" class="screen">
+  <div class="title">VIDEO</div>
+  <video src="valentine_video.mp4" controls width="300"></video>
+  <button class="backBtn">RETURN</button>
 </div>
 
 <script>
@@ -181,45 +211,31 @@ document.addEventListener("touchstart", () => {
   if (bgMusic.paused) bgMusic.play().catch(()=>{});
 }, { once:true });
 
-/* ---------- HUB BUTTONS ---------- */
+/* ---------- HUB BUTTONS NAVIGATION ---------- */
 const memoriesBtn = document.getElementById("memoriesBtn");
 const topSongsBtn = document.getElementById("topSongsBtn");
 const letterBtn = document.getElementById("letterBtn");
 const gameBtn = document.getElementById("gameBtn");
 const videoBtn = document.getElementById("videoBtn");
-const topSongsList = document.getElementById("topSongsList");
-const songButtons = document.querySelectorAll(".songBtn");
 
-/* MEMORIES BUTTON */
-memoriesBtn.addEventListener("click", () => {
-  alert("MEMORIES mode selected!"); // replace with your functionality
-});
+memoriesBtn.addEventListener("click", () => showScreen("memoriesScreen"));
+topSongsBtn.addEventListener("click", () => showScreen("topSongsScreen"));
+letterBtn.addEventListener("click", () => showScreen("letterScreen"));
+gameBtn.addEventListener("click", () => showScreen("gameScreen"));
+videoBtn.addEventListener("click", () => showScreen("videoScreen"));
 
-/* TOP 5 SONGS BUTTON */
-topSongsBtn.addEventListener("click", () => {
-  topSongsList.style.display = topSongsList.style.display === "flex" ? "none" : "flex";
-});
-
-/* INDIVIDUAL SONG BUTTONS */
+/* ---------- SONG BUTTONS IN TOP 5 SONGS PAGE ---------- */
+const songButtons = document.querySelectorAll("#topSongsScreen .songBtn");
 songButtons.forEach((btn, index) => {
   btn.addEventListener("click", () => {
-    alert(`Playing Song ${index + 1}`); // replace with actual song play functionality
+    alert(`Playing Song ${index + 1}`); // replace with audio playback
   });
 });
 
-/* LETTER BUTTON */
-letterBtn.addEventListener("click", () => {
-  alert("A LETTER mode selected!"); // replace with your functionality
-});
-
-/* GAME BUTTON */
-gameBtn.addEventListener("click", () => {
-  alert("GAME mode selected!"); // replace with your functionality
-});
-
-/* VIDEO BUTTON */
-videoBtn.addEventListener("click", () => {
-  alert("VIDEO mode selected!"); // replace with your functionality
+/* ---------- BACK BUTTONS ---------- */
+const backButtons = document.querySelectorAll(".backBtn");
+backButtons.forEach(btn => {
+  btn.addEventListener("click", () => showScreen("hubScreen"));
 });
 </script>
 
