@@ -22,7 +22,7 @@ body {
   overflow: hidden;
 }
 
-/* SCREEN SYSTEM */
+/* ---------- SCREEN SYSTEM ---------- */
 .screen {
   position: absolute;
   inset: 0;
@@ -30,64 +30,11 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.6s ease;
+  text-align: center;
 }
 
 .screen.active {
   display: flex;
-}
-
-/* TITLE */
-.title {
-  font-size: 1.4rem;
-  text-align: center;
-  margin-bottom: 40px;
-  text-shadow: 0 0 12px #9d4edd, 0 0 30px #7b2cbf;
-}
-
-/* START BUTTON */
-#startBtn {
-  padding: 20px 40px;
-  font-size: 1rem;
-  border: 3px solid #c77dff;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  position: relative;
-  box-shadow: 0 0 20px #9d4edd;
-  animation: glowPulse 2s infinite;
-}
-
-#startBtn::before {
-  content: "";
-  position: absolute;
-  inset: -15px;
-  background: radial-gradient(circle, rgba(157,78,221,0.6), transparent 70%);
-  z-index: -1;
-  animation: halo 2s infinite alternate;
-}
-
-@keyframes glowPulse {
-  0% { box-shadow: 0 0 10px #7b2cbf; }
-  100% { box-shadow: 0 0 30px #e0aaff; }
-}
-
-@keyframes halo {
-  0% { opacity: 0.4; }
-  100% { opacity: 0.9; }
-}
-
-/* PLAYER SELECT */
-.option {
-  font-size: 0.9rem;
-  margin: 20px 0;
-  padding: 15px 25px;
-  border: 2px solid #c77dff;
-  text-shadow: 0 0 10px #9d4edd;
-}
-
-/* FADE */
-.fade-in {
   animation: fade 0.6s ease forwards;
 }
 
@@ -95,62 +42,137 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* ---------- TITLE ---------- */
+.title {
+  font-size: 1.3rem;
+  margin-bottom: 40px;
+  text-shadow: 0 0 12px #9d4edd, 0 0 30px #7b2cbf;
+}
+
+/* ---------- BUTTONS ---------- */
+button {
+  background: transparent;
+  color: #fff;
+  border: 3px solid #c77dff;
+  padding: 16px 32px;
+  font-size: 0.8rem;
+  margin: 15px 0;
+  cursor: pointer;
+  box-shadow: 0 0 15px #9d4edd;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* START BUTTON GLOW */
+#startBtn {
+  position: relative;
+  animation: glowPulse 2s infinite;
+}
+
+#startBtn::before {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  background: radial-gradient(circle, rgba(157,78,221,0.6), transparent 70%);
+  z-index: -1;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 12px #7b2cbf; }
+  100% { box-shadow: 0 0 35px #e0aaff; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- BACKGROUND MUSIC -->
+<!-- MUSIC -->
 <audio id="bgMusic" src="music.mp3" loop playsinline></audio>
 
 <!-- START SCREEN -->
-<div id="startScreen" class="screen active fade-in">
+<div id="startScreen" class="screen active">
   <div class="title">VALENTINE’S DAY 2026</div>
   <button id="startBtn">START</button>
 </div>
 
-<!-- PLAYER SELECT SCREEN -->
+<!-- PLAYER SELECT -->
 <div id="playerSelect" class="screen">
-  <div class="option">1 PLAYER</div>
-  <div class="option">2 PLAYERS</div>
+  <button id="onePlayerBtn">1 PLAYER</button>
+  <button id="twoPlayerBtn">2 PLAYERS</button>
+</div>
+
+<!-- 1 PLAYER LOCKED -->
+<div id="lockedScreen" class="screen">
+  <div class="title">ACCESS DENIED</div>
+  <p style="font-size:0.6rem;margin:20px;">
+    NO LONGER AVAILABLE
+  </p>
+  <button id="returnBtn">RETURN TO MAIN MENU</button>
+</div>
+
+<!-- 2 PLAYER HUB -->
+<div id="hubScreen" class="screen">
+  <div class="title">SELECT MODE</div>
+  <button>MEMORIES</button>
+  <button>TOP 5 SONGS</button>
+  <button>A LETTER</button>
+  <button>GAME</button>
+  <button>VIDEO</button>
 </div>
 
 <script>
-const bgMusic = document.getElementById("bgMusic");
-const startBtn = document.getElementById("startBtn");
-
+/* ---------- CORE NAVIGATION ---------- */
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
+  document.querySelectorAll('.screen').forEach(screen => {
+    screen.classList.remove('active');
   });
-  document.getElementById(id).classList.add('active', 'fade-in');
+  document.getElementById(id).classList.add('active');
 }
 
-/* START BUTTON — MOBILE SAFE */
+/* ---------- AUDIO ---------- */
+const bgMusic = document.getElementById("bgMusic");
+
+/* ---------- BUTTONS ---------- */
+const startBtn = document.getElementById("startBtn");
+const onePlayerBtn = document.getElementById("onePlayerBtn");
+const twoPlayerBtn = document.getElementById("twoPlayerBtn");
+const returnBtn = document.getElementById("returnBtn");
+
+/* START */
 startBtn.addEventListener("click", () => {
-
-  // haptic feedback
-  if (navigator.vibrate) navigator.vibrate(50);
-
-  // screen transition
+  if (navigator.vibrate) navigator.vibrate(40);
   showScreen("playerSelect");
 
-  // manual audio unlock + play
   bgMusic.volume = 0.5;
-  bgMusic.currentTime = 0;
-
-  bgMusic.play().catch(() => {
-    console.log("Audio unlocked on next interaction");
-  });
+  bgMusic.play().catch(()=>{});
 });
 
-/* Backup audio unlock (extra safe) */
+/* 1 PLAYER (LOCKED) */
+onePlayerBtn.addEventListener("click", () => {
+  if (navigator.vibrate) navigator.vibrate(30);
+  showScreen("lockedScreen");
+});
+
+/* RETURN */
+returnBtn.addEventListener("click", () => {
+  showScreen("playerSelect");
+});
+
+/* 2 PLAYER */
+twoPlayerBtn.addEventListener("click", () => {
+  if (navigator.vibrate) navigator.vibrate([30,30]);
+  showScreen("hubScreen");
+});
+
+/* BACKUP AUDIO UNLOCK */
 document.addEventListener("touchstart", () => {
-  if (bgMusic.paused) {
-    bgMusic.play().catch(()=>{});
-  }
-}, { once: true });
+  if (bgMusic.paused) bgMusic.play().catch(()=>{});
+}, { once:true });
 </script>
 
 </body>
 </html>
+
