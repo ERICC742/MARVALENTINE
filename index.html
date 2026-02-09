@@ -157,11 +157,12 @@ function showScreen(id){
 }
 
 /* ---------- AUDIO ---------- */
-const bgMusic = document.getElementById("bgMusic");
+const bgMusic=document.getElementById("bgMusic");
+let bgVolume=0.5;
 startBtn.addEventListener("click",()=>{
   if(navigator.vibrate) navigator.vibrate(40);
   showScreen("playerSelect");
-  bgMusic.volume=0.5;
+  bgMusic.volume=bgVolume;
   bgMusic.play().catch(()=>{});
 });
 onePlayerBtn.addEventListener("click",()=>showScreen("lockedScreen"));
@@ -169,17 +170,56 @@ returnBtn.addEventListener("click",()=>showScreen("playerSelect"));
 twoPlayerBtn.addEventListener("click",()=>showScreen("hubScreen"));
 document.addEventListener("touchstart",()=>{if(bgMusic.paused) bgMusic.play().catch(()=>{});},{once:true});
 
-/* HUB BUTTONS */
+/* ---------- HUB BUTTONS ---------- */
+const memoriesBtn=document.getElementById("memoriesBtn");
+const topSongsBtn=document.getElementById("topSongsBtn");
+const letterBtn=document.getElementById("letterBtn");
+const gameBtn=document.getElementById("gameBtn");
+const videoBtn=document.getElementById("videoBtn");
+
 memoriesBtn.addEventListener("click",()=>showScreen("memoriesScreen"));
-topSongsBtn.addEventListener("click",()=>showScreen("topSongsScreen"));
 letterBtn.addEventListener("click",()=>{showScreen("letterScreen");startLetter();});
 gameBtn.addEventListener("click",()=>{showScreen("gameScreen");startSnakeDrag();});
 videoBtn.addEventListener("click",()=>showScreen("videoScreen"));
 
-/* BACK BUTTONS */
-document.querySelectorAll(".backBtn").forEach(btn=>btn.addEventListener("click",()=>showScreen("hubScreen")));
+/* ---------- FADE AUDIO ---------- */
+function fadeAudio(audio, targetVolume, duration=500){
+  const stepTime=50;
+  const steps=duration/stepTime;
+  const volumeStep=(targetVolume-audio.volume)/steps;
+  let currentStep=0;
+  const fadeInterval=setInterval(()=>{
+    currentStep++;
+    audio.volume+=volumeStep;
+    if(currentStep>=steps){
+      audio.volume=targetVolume;
+      clearInterval(fadeInterval);
+    }
+  },stepTime);
+}
 
-/* LETTER TYPING */
+/* TOP 5 SONGS WITH FADE */
+const topSongsScreen=document.getElementById("topSongsScreen");
+const songBackBtns=topSongsScreen.querySelectorAll(".backBtn");
+
+topSongsBtn.addEventListener("click",()=>{
+  fadeAudio(bgMusic,0,500);
+  showScreen("topSongsScreen");
+});
+
+songBackBtns.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    showScreen("hubScreen");
+    fadeAudio(bgMusic,bgVolume,500);
+  });
+});
+
+/* ---------- BACK BUTTONS ---------- */
+document.querySelectorAll(".backBtn").forEach(btn=>{
+  btn.addEventListener("click",()=>showScreen("hubScreen"));
+});
+
+/* ---------- LETTER TYPING ---------- */
 const letterText="Dear Love,\n\nI just wanted to remind you how much you mean to me. Every day with you is a gift, and I cherish every moment we share.\n\nLove always, Your Valentine ❤️";
 const letterElement=document.getElementById("letterText");
 let letterIndex=0;
@@ -231,7 +271,6 @@ function startSnakeDrag(){
   const snake=[];
   let dragging=false;
 
-  // simple path points for I LOVE YOU letters
   const pathPoints=[
     {x:50,y:50},{x:50,y:150},{x:50,y:250}, // I
     {x:100,y:50},{x:200,y:50},{x:200,y:100},{x:200,y:150},{x:200,y:200},{x:200,y:250}, // L
@@ -258,7 +297,6 @@ function startSnakeDrag(){
   }
 
   function update(){
-    // snake follows dragged points
     if(dragging && snake.length<pathPoints.length){
       snake.push(pathPoints[snake.length]);
     }
@@ -273,5 +311,3 @@ function startSnakeDrag(){
 </script>
 </body>
 </html>
-
-
