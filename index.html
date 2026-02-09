@@ -46,7 +46,7 @@ body {
 /* ---------- TITLE ---------- */
 .title {
   font-size: 1.3rem;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-shadow: 0 0 12px #9d4edd, 0 0 30px #7b2cbf;
 }
 
@@ -55,9 +55,9 @@ button {
   background: transparent;
   color: #fff;
   border: 3px solid #c77dff;
-  padding: 16px 32px;
+  padding: 12px 24px;
   font-size: 0.8rem;
-  margin: 15px 0;
+  margin: 10px 0;
   cursor: pointer;
   box-shadow: 0 0 15px #9d4edd;
 }
@@ -66,7 +66,6 @@ button:active {
   transform: scale(0.95);
 }
 
-/* START BUTTON GLOW */
 #startBtn {
   position: relative;
   animation: glowPulse 2s infinite;
@@ -83,6 +82,51 @@ button:active {
 @keyframes glowPulse {
   0% { box-shadow: 0 0 12px #7b2cbf; }
   100% { box-shadow: 0 0 35px #e0aaff; }
+}
+
+/* ---------- MEMORIES GRID ---------- */
+#memoriesScreen .photos {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#memoriesScreen .column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#memoriesScreen img {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border: 2px solid #c77dff;
+  box-shadow: 0 0 10px #9d4edd;
+}
+
+/* ---------- LETTER TYPING ---------- */
+#letterScreen p {
+  width: 80%;
+  max-width: 400px;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  white-space: pre-wrap;
+}
+
+/* ---------- GAME ---------- */
+#gameScreen .mathProblem {
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+#valentinePrompt {
+  margin-top: 20px;
+}
+
+#noBtn {
+  position: relative;
+  transition: all 0.2s ease;
 }
 </style>
 </head>
@@ -124,7 +168,20 @@ button:active {
 <!-- MEMORIES PAGE -->
 <div id="memoriesScreen" class="screen">
   <div class="title">MEMORIES</div>
-  <p>Here are all our favorite memories together!</p>
+  <div class="photos">
+    <div class="column">
+      <img src="photo1.jpg" alt="">
+      <img src="photo2.jpg" alt="">
+      <img src="photo3.jpg" alt="">
+      <img src="photo4.jpg" alt="">
+    </div>
+    <div class="column">
+      <img src="photo5.jpg" alt="">
+      <img src="photo6.jpg" alt="">
+      <img src="photo7.jpg" alt="">
+      <img src="photo8.jpg" alt="">
+    </div>
+  </div>
   <button class="backBtn">RETURN</button>
 </div>
 
@@ -141,18 +198,27 @@ button:active {
   <button class="backBtn">RETURN</button>
 </div>
 
-<!-- A LETTER PAGE -->
+<!-- LETTER PAGE -->
 <div id="letterScreen" class="screen">
   <div class="title">A LETTER</div>
-  <p>Dear Love, here is a special letter for you...</p>
+  <p id="letterText"></p>
   <button class="backBtn">RETURN</button>
 </div>
 
 <!-- GAME PAGE -->
 <div id="gameScreen" class="screen">
   <div class="title">GAME</div>
-  <p>Play our mini Valentine’s game here!</p>
-  <button class="backBtn">RETURN</button>
+  <div id="mathContainer">
+    <div class="mathProblem" id="problemText"></div>
+    <input type="number" id="answerInput" placeholder="Enter answer" style="padding:8px; margin-top:10px; width:100px;">
+    <button id="submitAnswer">Submit</button>
+  </div>
+  <div id="valentinePrompt" style="display:none;">
+    <p>Will you be my Valentine?</p>
+    <button id="yesBtn">YES</button>
+    <button id="noBtn">NO</button>
+  </div>
+  <button class="backBtn" style="margin-top:20px;">RETURN</button>
 </div>
 
 <!-- VIDEO PAGE -->
@@ -180,38 +246,31 @@ const onePlayerBtn = document.getElementById("onePlayerBtn");
 const twoPlayerBtn = document.getElementById("twoPlayerBtn");
 const returnBtn = document.getElementById("returnBtn");
 
-/* START */
 startBtn.addEventListener("click", () => {
-  if (navigator.vibrate) navigator.vibrate(40);
+  if(navigator.vibrate) navigator.vibrate(40);
   showScreen("playerSelect");
-
   bgMusic.volume = 0.5;
   bgMusic.play().catch(()=>{});
 });
 
-/* 1 PLAYER (LOCKED) */
 onePlayerBtn.addEventListener("click", () => {
-  if (navigator.vibrate) navigator.vibrate(30);
+  if(navigator.vibrate) navigator.vibrate(30);
   showScreen("lockedScreen");
 });
 
-/* RETURN */
-returnBtn.addEventListener("click", () => {
-  showScreen("playerSelect");
-});
+returnBtn.addEventListener("click", () => showScreen("playerSelect"));
 
-/* 2 PLAYER */
 twoPlayerBtn.addEventListener("click", () => {
-  if (navigator.vibrate) navigator.vibrate([30,30]);
+  if(navigator.vibrate) navigator.vibrate([30,30]);
   showScreen("hubScreen");
 });
 
-/* BACKUP AUDIO UNLOCK */
+/* BACKUP AUDIO */
 document.addEventListener("touchstart", () => {
-  if (bgMusic.paused) bgMusic.play().catch(()=>{});
+  if(bgMusic.paused) bgMusic.play().catch(()=>{});
 }, { once:true });
 
-/* ---------- HUB BUTTONS NAVIGATION ---------- */
+/* ---------- HUB BUTTONS ---------- */
 const memoriesBtn = document.getElementById("memoriesBtn");
 const topSongsBtn = document.getElementById("topSongsBtn");
 const letterBtn = document.getElementById("letterBtn");
@@ -224,20 +283,86 @@ letterBtn.addEventListener("click", () => showScreen("letterScreen"));
 gameBtn.addEventListener("click", () => showScreen("gameScreen"));
 videoBtn.addEventListener("click", () => showScreen("videoScreen"));
 
-/* ---------- SONG BUTTONS IN TOP 5 SONGS PAGE ---------- */
+/* ---------- SONG BUTTONS ---------- */
 const songButtons = document.querySelectorAll("#topSongsScreen .songBtn");
-songButtons.forEach((btn, index) => {
-  btn.addEventListener("click", () => {
-    alert(`Playing Song ${index + 1}`); // replace with audio playback
-  });
+songButtons.forEach((btn,index)=>{
+  btn.addEventListener("click", () => alert(`Playing Song ${index+1}`));
 });
 
 /* ---------- BACK BUTTONS ---------- */
 const backButtons = document.querySelectorAll(".backBtn");
-backButtons.forEach(btn => {
-  btn.addEventListener("click", () => showScreen("hubScreen"));
+backButtons.forEach(btn => btn.addEventListener("click", () => showScreen("hubScreen")));
+
+/* ---------- LETTER TYPING ---------- */
+const letterText = "Dear Love,\n\nI just wanted to remind you how much you mean to me. Every day with you is a gift, and I cherish every moment we share.\n\nLove always, Your Valentine ❤️";
+const letterElement = document.getElementById("letterText");
+let letterIndex = 0;
+function typeLetter() {
+  if(letterIndex < letterText.length){
+    letterElement.textContent += letterText[letterIndex];
+    letterIndex++;
+    setTimeout(typeLetter, 50);
+  }
+}
+letterBtn.addEventListener("click", () => {
+  letterElement.textContent = "";
+  letterIndex = 0;
+  typeLetter();
 });
+
+/* ---------- MATH GAME ---------- */
+const problems = [
+  { q: "2 + 2", a: 4 },
+  { q: "5 * 3", a: 15 },
+  { q: "10 - 6", a: 4 },
+  { q: "8 / 2", a: 4 },
+  { q: "7 + 7", a: 14 }
+];
+let currentProblem = 0;
+const problemText = document.getElementById("problemText");
+const answerInput = document.getElementById("answerInput");
+const submitAnswer = document.getElementById("submitAnswer");
+const mathContainer = document.getElementById("mathContainer");
+const valentinePrompt = document.getElementById("valentinePrompt");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+function showNextProblem(){
+  if(currentProblem < problems.length){
+    problemText.textContent = problems[currentProblem].q;
+    answerInput.value = "";
+  } else {
+    mathContainer.style.display = "none";
+    valentinePrompt.style.display = "block";
+  }
+}
+
+submitAnswer.addEventListener("click", () => {
+  const ans = Number(answerInput.value);
+  if(ans === problems[currentProblem].a){
+    currentProblem++;
+    showNextProblem();
+  } else {
+    alert("Try again!");
+  }
+});
+
+gameBtn.addEventListener("click", () => {
+  currentProblem = 0;
+  mathContainer.style.display = "block";
+  valentinePrompt.style.display = "none";
+  showNextProblem();
+});
+
+/* ---------- NO BUTTON MISCHIEF ---------- */
+noBtn.addEventListener("mouseenter", () => {
+  const x = Math.random()*150 - 75;
+  const y = Math.random()*150 - 75;
+  noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.7)`;
+});
+yesBtn.addEventListener("click", () => alert("Yay! ❤️ You are my Valentine!"));
 </script>
 
 </body>
 </html>
+
