@@ -116,11 +116,20 @@ button:active {
 <!-- 2 PLAYER HUB -->
 <div id="hubScreen" class="screen">
   <div class="title">SELECT MODE</div>
-  <button>MEMORIES</button>
-  <button>TOP 5 SONGS</button>
-  <button>A LETTER</button>
-  <button>GAME</button>
-  <button>VIDEO</button>
+  <button id="memoriesBtn">MEMORIES</button>
+  <button id="topSongsBtn">TOP 5 SONGS</button>
+  <button id="letterBtn">A LETTER</button>
+  <button id="gameBtn">GAME</button>
+  <button id="videoBtn">VIDEO</button>
+  
+  <!-- TOP 5 SONGS LIST (HIDDEN BY DEFAULT) -->
+  <div id="topSongsList" style="margin-top:20px; display:none; flex-direction: column; gap:10px;">
+    <button class="songBtn">Song 1</button>
+    <button class="songBtn">Song 2</button>
+    <button class="songBtn">Song 3</button>
+    <button class="songBtn">Song 4</button>
+    <button class="songBtn">Song 5</button>
+  </div>
 </div>
 
 <script>
@@ -171,8 +180,48 @@ twoPlayerBtn.addEventListener("click", () => {
 document.addEventListener("touchstart", () => {
   if (bgMusic.paused) bgMusic.play().catch(()=>{});
 }, { once:true });
+
+/* ---------- HUB BUTTONS ---------- */
+const memoriesBtn = document.getElementById("memoriesBtn");
+const topSongsBtn = document.getElementById("topSongsBtn");
+const letterBtn = document.getElementById("letterBtn");
+const gameBtn = document.getElementById("gameBtn");
+const videoBtn = document.getElementById("videoBtn");
+const topSongsList = document.getElementById("topSongsList");
+const songButtons = document.querySelectorAll(".songBtn");
+
+/* MEMORIES BUTTON */
+memoriesBtn.addEventListener("click", () => {
+  alert("MEMORIES mode selected!"); // replace with your functionality
+});
+
+/* TOP 5 SONGS BUTTON */
+topSongsBtn.addEventListener("click", () => {
+  topSongsList.style.display = topSongsList.style.display === "flex" ? "none" : "flex";
+});
+
+/* INDIVIDUAL SONG BUTTONS */
+songButtons.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    alert(`Playing Song ${index + 1}`); // replace with actual song play functionality
+  });
+});
+
+/* LETTER BUTTON */
+letterBtn.addEventListener("click", () => {
+  alert("A LETTER mode selected!"); // replace with your functionality
+});
+
+/* GAME BUTTON */
+gameBtn.addEventListener("click", () => {
+  alert("GAME mode selected!"); // replace with your functionality
+});
+
+/* VIDEO BUTTON */
+videoBtn.addEventListener("click", () => {
+  alert("VIDEO mode selected!"); // replace with your functionality
+});
 </script>
 
 </body>
 </html>
-
