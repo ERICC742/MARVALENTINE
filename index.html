@@ -10,120 +10,120 @@
 
 <style>
 :root{
-  --pink:#ff4da6;
+  --pink:#ff4da6;
 }
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Press Start 2P',cursive;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Press Start 2P',cursive;
 }
 
 body{
-  background:black;
-  color:var(--pink);
-  overflow:hidden;
+  background:black;
+  color:var(--pink);
+  overflow:hidden;
 }
 
 /* SCREENS */
 .screen{
-  position:absolute;
-  inset:0;
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:24px;
-  opacity:0;
-  transition:opacity .6s ease;
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:24px;
+  opacity:0;
+  transition:opacity .6s ease;
 }
 
 .screen.active{
-  display:flex;
-  opacity:1;
+  display:flex;
+  opacity:1;
 }
 
 /* HEADERS */
 h1{
-  font-size:1.2rem;
-  text-shadow:0 0 15px var(--pink);
-  margin-bottom:24px;
+  font-size:1.2rem;
+  text-shadow:0 0 15px var(--pink);
+  margin-bottom:24px;
 }
 
 /* BUTTONS (THUMB FRIENDLY) */
 button{
-  width:100%;
-  max-width:280px;
-  padding:18px;
-  margin:12px 0;
-  font-size:.65rem;
-  background:black;
-  color:var(--pink);
-  border:2px solid var(--pink);
-  box-shadow:0 0 12px var(--pink);
-  border-radius:8px;
+  width:100%;
+  max-width:280px;
+  padding:18px;
+  margin:12px 0;
+  font-size:.65rem;
+  background:black;
+  color:var(--pink);
+  border:2px solid var(--pink);
+  box-shadow:0 0 12px var(--pink);
+  border-radius:8px;
 }
 
 button:active{
-  background:var(--pink);
-  color:black;
-  transform:scale(.96);
+  background:var(--pink);
+  color:black;
+  transform:scale(.96);
 }
 
 .locked{
-  opacity:.3;
-  pointer-events:none;
+  opacity:.3;
+  pointer-events:none;
 }
 
 /* START SCREEN */
 #startGlow{
-  position:absolute;
-  width:240px;
-  height:70px;
-  background:var(--pink);
-  filter:blur(35px);
-  opacity:.6;
-  animation:pulse 2s infinite;
+  position:absolute;
+  width:240px;
+  height:70px;
+  background:var(--pink);
+  filter:blur(35px);
+  opacity:.6;
+  animation:pulse 2s infinite;
 }
 
 @keyframes pulse{
-  50%{transform:scale(1.3);opacity:.9}
+  50%{transform:scale(1.3);opacity:.9}
 }
 
 /* MEMORIES */
 .memories-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  width:100%;
 }
 
 .memories-grid img{
-  width:100%;
-  border:2px solid var(--pink);
-  box-shadow:0 0 10px var(--pink);
+  width:100%;
+  border:2px solid var(--pink);
+  box-shadow:0 0 10px var(--pink);
 }
 
 /* LETTER */
 #typedText{
-  font-size:.6rem;
-  line-height:1.8;
+  font-size:.6rem;
+  line-height:1.8;
 }
 
 /* SONGS */
 .equalizer{
-  display:flex;
-  gap:6px;
-  margin-top:30px;
+  display:flex;
+  gap:6px;
+  margin-top:30px;
 }
 
 .bar{
-  width:10px;
-  height:20px;
-  background:var(--pink);
-  animation:bounce 1s infinite;
+  width:10px;
+  height:20px;
+  background:var(--pink);
+  animation:bounce 1s infinite;
 }
 
 .bar:nth-child(2){animation-delay:.1s}
@@ -132,38 +132,38 @@ button:active{
 .bar:nth-child(5){animation-delay:.4s}
 
 @keyframes bounce{
-  50%{height:50px}
+  50%{height:50px}
 }
 
 /* GAME */
 #mathBox{
-  font-size:.8rem;
+  font-size:.8rem;
 }
 
 #mathBox input{
-  width:100%;
-  margin-top:12px;
-  padding:12px;
-  font-size:.8rem;
-  text-align:center;
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  font-size:.8rem;
+  text-align:center;
 }
 
 #letters{
-  margin-top:16px;
-  font-size:1.2rem;
+  margin-top:16px;
+  font-size:1.2rem;
 }
 
 /* VALENTINE */
 #valentineButtons{
-  position:relative;
-  width:100%;
-  max-width:300px;
+  position:relative;
+  width:100%;
+  max-width:300px;
 }
 
 #noBtn{
-  position:absolute;
-  top:60px;
-  left:0;
+  position:absolute;
+  top:60px;
+  left:0;
 }
 </style>
 </head>
@@ -180,105 +180,105 @@ button:active{
 
 <!-- START -->
 <div id="startScreen" class="screen active">
-  <h1>VALENTINE’S DAY 2026</h1>
-  <div style="position:relative">
-    <div id="startGlow"></div>
-    <button onclick="start()">START</button>
-  </div>
+  <h1>VALENTINE’S DAY 2026</h1>
+  <div style="position:relative">
+    <div id="startGlow"></div>
+    <button onclick="start()">START</button>
+  </div>
 </div>
 
 <!-- PLAYER SELECT -->
 <div id="playerSelect" class="screen">
-  <h1>SELECT MODE</h1>
-  <button onclick="onePlayer()">1 PLAYER</button>
-  <button id="twoBtn" class="locked" onclick="twoPlayers()">2 PLAYERS</button>
+  <h1>SELECT MODE</h1>
+  <button onclick="onePlayer()">1 PLAYER</button>
+  <button id="twoBtn" class="locked" onclick="twoPlayers()">2 PLAYERS</button>
 </div>
 
 <!-- 1 PLAYER -->
 <div id="onePlayerScreen" class="screen">
-  <h1>ACCESS DENIED</h1>
-  <p>NO LONGER AVAILABLE</p>
-  <button onclick="back()">BACK</button>
+  <h1>ACCESS DENIED</h1>
+  <p>NO LONGER AVAILABLE</p>
+  <button onclick="back()">BACK</button>
 </div>
 
 <!-- 2 PLAYER MENU -->
 <div id="twoPlayerScreen" class="screen">
-  <button onclick="showScreen('memories')">MEMORIES</button>
-  <button onclick="openSongs()">TOP 5 SONGS</button>
-  <button onclick="openLetter()">A LETTER</button>
-  <button onclick="openGame()">INTERACTIVE GAME</button>
-  <button onclick="showScreen('video')">OUR VIDEO</button>
-  <button onclick="back()">MENU</button>
+  <button onclick="showScreen('memories')">MEMORIES</button>
+  <button onclick="openSongs()">TOP 5 SONGS</button>
+  <button onclick="openLetter()">A LETTER</button>
+  <button onclick="openGame()">INTERACTIVE GAME</button>
+  <button onclick="showScreen('video')">OUR VIDEO</button>
+  <button onclick="back()">MENU</button>
 </div>
 
 <!-- MEMORIES -->
 <div id="memories" class="screen">
-  <h1>OUR MEMORIES</h1>
-  <div class="memories-grid">
-    <img src="memories/pic1.jpg"><img src="memories/pic2.jpg">
-    <img src="memories/pic3.jpg"><img src="memories/pic4.jpg">
-    <img src="memories/pic5.jpg"><img src="memories/pic6.jpg">
-    <img src="memories/pic7.jpg"><img src="memories/pic8.jpg">
-  </div>
-  <button onclick="twoPlayers()">BACK</button>
+  <h1>OUR MEMORIES</h1>
+  <div class="memories-grid">
+    <img src="memories/pic1.jpg"><img src="memories/pic2.jpg">
+    <img src="memories/pic3.jpg"><img src="memories/pic4.jpg">
+    <img src="memories/pic5.jpg"><img src="memories/pic6.jpg">
+    <img src="memories/pic7.jpg"><img src="memories/pic8.jpg">
+  </div>
+  <button onclick="twoPlayers()">BACK</button>
 </div>
 
 <!-- SONGS -->
 <div id="songs" class="screen">
-  <h1>TOP 5 SONGS</h1>
-  <div class="equalizer">
-    <div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-  </div>
-  <button onclick="exitSongs()">BACK</button>
+  <h1>TOP 5 SONGS</h1>
+  <div class="equalizer">
+    <div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  </div>
+  <button onclick="exitSongs()">BACK</button>
 </div>
 
 <!-- LETTER -->
 <div id="letter" class="screen">
-  <h1>MY LETTER</h1>
-  <div id="typedText"></div>
-  <button onclick="twoPlayers()">BACK</button>
+  <h1>MY LETTER</h1>
+  <div id="typedText"></div>
+  <button onclick="twoPlayers()">BACK</button>
 </div>
 
 <!-- GAME -->
 <div id="game" class="screen">
-  <h1>SOLVE THE CODE</h1>
-  <div id="mathBox"></div>
-  <div id="letters"></div>
+  <h1>SOLVE THE CODE</h1>
+  <div id="mathBox"></div>
+  <div id="letters"></div>
 </div>
 
 <!-- VALENTINE -->
 <div id="valentine" class="screen">
-  <h1>Will you be my Valentine? ❤️</h1>
-  <div id="valentineButtons">
-    <button onclick="yes()">YES</button>
-    <button id="noBtn" onclick="moveNo()">NO</button>
-  </div>
+  <h1>Will you be my Valentine? ❤️</h1>
+  <div id="valentineButtons">
+    <button onclick="yes()">YES</button>
+    <button id="noBtn" onclick="moveNo()">NO</button>
+  </div>
 </div>
 
 <!-- VIDEO -->
 <div id="video" class="screen">
-  <h1>US ❤️</h1>
-  <video src="video.mp4" muted autoplay loop playsinline width="100%"></video>
-  <button onclick="twoPlayers()">BACK</button>
+  <h1>US ❤️</h1>
+  <video src="video.mp4" muted autoplay loop playsinline width="100%"></video>
+  <button onclick="twoPlayers()">BACK</button>
 </div>
 
 <script>
 /* SCREEN */
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
 /* START */
 function start(){
-  bgMusic.play();
-  showScreen('playerSelect');
+  bgMusic.play();
+  showScreen('playerSelect');
 }
 
 function back(){
-  document.getElementById('twoBtn').classList.remove('locked');
-  showScreen('playerSelect');
+  document.getElementById('twoBtn').classList.remove('locked');
+  showScreen('playerSelect');
 }
 
 function onePlayer(){showScreen('onePlayerScreen')}
@@ -294,86 +294,85 @@ Every moment.
 I’d choose you every time.`;
 let idx=0;
 function openLetter(){
-  typedText.innerHTML="";
-  idx=0;
-  showScreen('letter');
-  (function type(){
-    if(idx<text.length){
-      typedText.innerHTML+=text[idx++];
-      setTimeout(type,40);
-    }
-  })();
+  typedText.innerHTML="";
+  idx=0;
+  showScreen('letter');
+  (function type(){
+    if(idx<text.length){
+      typedText.innerHTML+=text[idx++];
+      setTimeout(type,40);
+    }
+  })();
 }
 
 /* SONGS */
 const songs=[song1,song2,song3,song4,song5];
 let s=0,timer;
 function openSongs(){
-  bgMusic.pause();
-  showScreen('songs');
-  playSong();
+  bgMusic.pause();
+  showScreen('songs');
+  playSong();
 }
 function playSong(){
-  songs[s].play();
-  timer=setTimeout(()=>{
-    songs[s].pause();
-    songs[s].currentTime=0;
-    s=(s+1)%songs.length;
-    playSong();
-  },30000);
+  songs[s].play();
+  timer=setTimeout(()=>{
+    songs[s].pause();
+    songs[s].currentTime=0;
+    s=(s+1)%songs.length;
+    playSong();
+  },30000);
 }
 function exitSongs(){
-  clearTimeout(timer);
-  songs.forEach(x=>{x.pause();x.currentTime=0});
-  bgMusic.play();
-  twoPlayers();
+  clearTimeout(timer);
+  songs.forEach(x=>{x.pause();x.currentTime=0});
+  bgMusic.play();
+  twoPlayers();
 }
 
 /* GAME */
 const puzzles=[
-  {q:"3+6",a:9,l:"I"},
-  {q:"10-8",a:2,l:"L"},
-  {q:"4+11",a:15,l:"O"},
-  {q:"6+16",a:22,l:"V"},
-  {q:"7+24",a:31,l:"E"},
-  {q:"9+16",a:25,l:"Y"},
-  {q:"9+6",a:15,l:"O"},
-  {q:"10+11",a:21,l:"U"}
+  {q:"3+6",a:9,l:"I"},
+  {q:"10-8",a:2,l:"L"},
+  {q:"4+11",a:15,l:"O"},
+  {q:"6+16",a:22,l:"V"},
+  {q:"7+24",a:31,l:"E"},
+  {q:"9+16",a:25,l:"Y"},
+  {q:"9+6",a:15,l:"O"},
+  {q:"10+11",a:21,l:"U"}
 ];
 let p=0,word="";
 function openGame(){
-  p=0;word="";letters.innerHTML="";
-  showScreen('game');
-  next();
+  p=0;word="";letters.innerHTML="";
+  showScreen('game');
+  next();
 }
 function next(){
-  if(p>=puzzles.length){showScreen('valentine');return;}
-  mathBox.innerHTML=`${puzzles[p].q} =
-    <input id="ans">
-    <button onclick="check()">OK</button>`;
+  if(p>=puzzles.length){showScreen('valentine');return;}
+  mathBox.innerHTML=`${puzzles[p].q} =
+    <input id="ans">
+    <button onclick="check()">OK</button>`;
 }
 function check(){
-  if(+ans.value===puzzles[p].a){
-    word+=puzzles[p].l;
-    letters.innerHTML=word;
-    p++;next();
-  }
+  if(+ans.value===puzzles[p].a){
+    word+=puzzles[p].l;
+    letters.innerHTML=word;
+    p++;next();
+  }
 }
 
 /* NO BUTTON */
 function moveNo(){
-  noBtn.style.left=Math.random()*150+"px";
-  noBtn.style.top=Math.random()*120+"px";
-  noBtn.style.transform="scale(.7)";
+  noBtn.style.left=Math.random()*150+"px";
+  noBtn.style.top=Math.random()*120+"px";
+  noBtn.style.transform="scale(.7)";
 }
 
 /* YES */
 function yes(){
-  if(navigator.vibrate) navigator.vibrate([200,100,200]);
-  alert("I love you ❤️");
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+  alert("I love you ❤️");
 }
 </script>
 
 </body>
 </html>
-
