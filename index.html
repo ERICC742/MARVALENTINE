@@ -2,376 +2,154 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine’s Day 2026</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --pink:#ff4da6;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Press Start 2P', cursive;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Press Start 2P',cursive;
+body {
+  background: radial-gradient(circle, #1a0033, #000);
+  color: #c77dff;
+  height: 100vh;
+  overflow: hidden;
 }
 
-body{
-  background:black;
-  color:var(--pink);
-  overflow:hidden;
+/* SCREEN SYSTEM */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.6s ease;
 }
 
-/* SCREENS */
-.screen{
-  position:absolute;
-  inset:0;
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:24px;
-  opacity:0;
-  transition:opacity .6s ease;
+.screen.active {
+  display: flex;
 }
 
-.screen.active{
-  display:flex;
-  opacity:1;
+/* TITLE */
+.title {
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 12px #9d4edd, 0 0 30px #7b2cbf;
 }
 
-/* HEADERS */
-h1{
-  font-size:1.2rem;
-  text-shadow:0 0 15px var(--pink);
-  margin-bottom:24px;
+/* START BUTTON */
+#startBtn {
+  padding: 20px 40px;
+  font-size: 1rem;
+  border: 3px solid #c77dff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 20px #9d4edd;
+  animation: glowPulse 2s infinite;
 }
 
-/* BUTTONS (THUMB FRIENDLY) */
-button{
-  width:100%;
-  max-width:280px;
-  padding:18px;
-  margin:12px 0;
-  font-size:.65rem;
-  background:black;
-  color:var(--pink);
-  border:2px solid var(--pink);
-  box-shadow:0 0 12px var(--pink);
-  border-radius:8px;
+#startBtn::before {
+  content: "";
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle, rgba(157,78,221,0.6), transparent 70%);
+  z-index: -1;
+  animation: halo 2s infinite alternate;
 }
 
-button:active{
-  background:var(--pink);
-  color:black;
-  transform:scale(.96);
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 10px #7b2cbf; }
+  100% { box-shadow: 0 0 30px #e0aaff; }
 }
 
-.locked{
-  opacity:.3;
-  pointer-events:none;
+@keyframes halo {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.9; }
 }
 
-/* START SCREEN */
-#startGlow{
-  position:absolute;
-  width:240px;
-  height:70px;
-  background:var(--pink);
-  filter:blur(35px);
-  opacity:.6;
-  animation:pulse 2s infinite;
+/* PLAYER SELECT */
+.option {
+  font-size: 0.9rem;
+  margin: 20px 0;
+  padding: 15px 25px;
+  border: 2px solid #c77dff;
+  text-shadow: 0 0 10px #9d4edd;
 }
 
-@keyframes pulse{
-  50%{transform:scale(1.3);opacity:.9}
+/* FADE */
+.fade-in {
+  animation: fade 0.6s ease forwards;
 }
 
-/* MEMORIES */
-.memories-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  width:100%;
-}
-
-.memories-grid img{
-  width:100%;
-  border:2px solid var(--pink);
-  box-shadow:0 0 10px var(--pink);
-}
-
-/* LETTER */
-#typedText{
-  font-size:.6rem;
-  line-height:1.8;
-}
-
-/* SONGS */
-.equalizer{
-  display:flex;
-  gap:6px;
-  margin-top:30px;
-}
-
-.bar{
-  width:10px;
-  height:20px;
-  background:var(--pink);
-  animation:bounce 1s infinite;
-}
-
-.bar:nth-child(2){animation-delay:.1s}
-.bar:nth-child(3){animation-delay:.2s}
-.bar:nth-child(4){animation-delay:.3s}
-.bar:nth-child(5){animation-delay:.4s}
-
-@keyframes bounce{
-  50%{height:50px}
-}
-
-/* GAME */
-#mathBox{
-  font-size:.8rem;
-}
-
-#mathBox input{
-  width:100%;
-  margin-top:12px;
-  padding:12px;
-  font-size:.8rem;
-  text-align:center;
-}
-
-#letters{
-  margin-top:16px;
-  font-size:1.2rem;
-}
-
-/* VALENTINE */
-#valentineButtons{
-  position:relative;
-  width:100%;
-  max-width:300px;
-}
-
-#noBtn{
-  position:absolute;
-  top:60px;
-  left:0;
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- AUDIO -->
-<audio id="bgMusic" src="music.mp3" loop></audio>
-<audio id="song1" src="songs/song1.mp3"></audio>
-<audio id="song2" src="songs/song2.mp3"></audio>
-<audio id="song3" src="songs/song3.mp3"></audio>
-<audio id="song4" src="songs/song4.mp3"></audio>
-<audio id="song5" src="songs/song5.mp3"></audio>
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" src="music.mp3" loop playsinline></audio>
 
-<!-- START -->
-<div id="startScreen" class="screen active">
-  <h1>VALENTINE’S DAY 2026</h1>
-  <div style="position:relative">
-    <div id="startGlow"></div>
-    <button onclick="start()">START</button>
-  </div>
+<!-- START SCREEN -->
+<div id="startScreen" class="screen active fade-in">
+  <div class="title">VALENTINE’S DAY 2026</div>
+  <button id="startBtn">START</button>
 </div>
 
-<!-- PLAYER SELECT -->
+<!-- PLAYER SELECT SCREEN -->
 <div id="playerSelect" class="screen">
-  <h1>SELECT MODE</h1>
-  <button onclick="onePlayer()">1 PLAYER</button>
-  <button id="twoBtn" class="locked" onclick="twoPlayers()">2 PLAYERS</button>
-</div>
-
-<!-- 1 PLAYER -->
-<div id="onePlayerScreen" class="screen">
-  <h1>ACCESS DENIED</h1>
-  <p>NO LONGER AVAILABLE</p>
-  <button onclick="back()">BACK</button>
-</div>
-
-<!-- 2 PLAYER MENU -->
-<div id="twoPlayerScreen" class="screen">
-  <button onclick="showScreen('memories')">MEMORIES</button>
-  <button onclick="openSongs()">TOP 5 SONGS</button>
-  <button onclick="openLetter()">A LETTER</button>
-  <button onclick="openGame()">INTERACTIVE GAME</button>
-  <button onclick="showScreen('video')">OUR VIDEO</button>
-  <button onclick="back()">MENU</button>
-</div>
-
-<!-- MEMORIES -->
-<div id="memories" class="screen">
-  <h1>OUR MEMORIES</h1>
-  <div class="memories-grid">
-    <img src="memories/pic1.jpg"><img src="memories/pic2.jpg">
-    <img src="memories/pic3.jpg"><img src="memories/pic4.jpg">
-    <img src="memories/pic5.jpg"><img src="memories/pic6.jpg">
-    <img src="memories/pic7.jpg"><img src="memories/pic8.jpg">
-  </div>
-  <button onclick="twoPlayers()">BACK</button>
-</div>
-
-<!-- SONGS -->
-<div id="songs" class="screen">
-  <h1>TOP 5 SONGS</h1>
-  <div class="equalizer">
-    <div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-  </div>
-  <button onclick="exitSongs()">BACK</button>
-</div>
-
-<!-- LETTER -->
-<div id="letter" class="screen">
-  <h1>MY LETTER</h1>
-  <div id="typedText"></div>
-  <button onclick="twoPlayers()">BACK</button>
-</div>
-
-<!-- GAME -->
-<div id="game" class="screen">
-  <h1>SOLVE THE CODE</h1>
-  <div id="mathBox"></div>
-  <div id="letters"></div>
-</div>
-
-<!-- VALENTINE -->
-<div id="valentine" class="screen">
-  <h1>Will you be my Valentine? ❤️</h1>
-  <div id="valentineButtons">
-    <button onclick="yes()">YES</button>
-    <button id="noBtn" onclick="moveNo()">NO</button>
-  </div>
-</div>
-
-<!-- VIDEO -->
-<div id="video" class="screen">
-  <h1>US ❤️</h1>
-  <video src="video.mp4" muted autoplay loop playsinline width="100%"></video>
-  <button onclick="twoPlayers()">BACK</button>
+  <div class="option">1 PLAYER</div>
+  <div class="option">2 PLAYERS</div>
 </div>
 
 <script>
-/* SCREEN */
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const bgMusic = document.getElementById("bgMusic");
+const startBtn = document.getElementById("startBtn");
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active', 'fade-in');
 }
 
-/* START */
-function start(){
-  bgMusic.play();
-  showScreen('playerSelect');
-}
+/* START BUTTON — MOBILE SAFE */
+startBtn.addEventListener("click", () => {
 
-function back(){
-  document.getElementById('twoBtn').classList.remove('locked');
-  showScreen('playerSelect');
-}
+  // haptic feedback
+  if (navigator.vibrate) navigator.vibrate(50);
 
-function onePlayer(){showScreen('onePlayerScreen')}
-function twoPlayers(){showScreen('twoPlayerScreen')}
+  // screen transition
+  showScreen("playerSelect");
 
-/* LETTER */
-const text=`You’re my favorite place to be.
+  // manual audio unlock + play
+  bgMusic.volume = 0.5;
+  bgMusic.currentTime = 0;
 
-Every laugh.
-Every late night.
-Every moment.
+  bgMusic.play().catch(() => {
+    console.log("Audio unlocked on next interaction");
+  });
+});
 
-I’d choose you every time.`;
-let idx=0;
-function openLetter(){
-  typedText.innerHTML="";
-  idx=0;
-  showScreen('letter');
-  (function type(){
-    if(idx<text.length){
-      typedText.innerHTML+=text[idx++];
-      setTimeout(type,40);
-    }
-  })();
-}
-
-/* SONGS */
-const songs=[song1,song2,song3,song4,song5];
-let s=0,timer;
-function openSongs(){
-  bgMusic.pause();
-  showScreen('songs');
-  playSong();
-}
-function playSong(){
-  songs[s].play();
-  timer=setTimeout(()=>{
-    songs[s].pause();
-    songs[s].currentTime=0;
-    s=(s+1)%songs.length;
-    playSong();
-  },30000);
-}
-function exitSongs(){
-  clearTimeout(timer);
-  songs.forEach(x=>{x.pause();x.currentTime=0});
-  bgMusic.play();
-  twoPlayers();
-}
-
-/* GAME */
-const puzzles=[
-  {q:"3+6",a:9,l:"I"},
-  {q:"10-8",a:2,l:"L"},
-  {q:"4+11",a:15,l:"O"},
-  {q:"6+16",a:22,l:"V"},
-  {q:"7+24",a:31,l:"E"},
-  {q:"9+16",a:25,l:"Y"},
-  {q:"9+6",a:15,l:"O"},
-  {q:"10+11",a:21,l:"U"}
-];
-let p=0,word="";
-function openGame(){
-  p=0;word="";letters.innerHTML="";
-  showScreen('game');
-  next();
-}
-function next(){
-  if(p>=puzzles.length){showScreen('valentine');return;}
-  mathBox.innerHTML=`${puzzles[p].q} =
-    <input id="ans">
-    <button onclick="check()">OK</button>`;
-}
-function check(){
-  if(+ans.value===puzzles[p].a){
-    word+=puzzles[p].l;
-    letters.innerHTML=word;
-    p++;next();
+/* Backup audio unlock (extra safe) */
+document.addEventListener("touchstart", () => {
+  if (bgMusic.paused) {
+    bgMusic.play().catch(()=>{});
   }
-}
-
-/* NO BUTTON */
-function moveNo(){
-  noBtn.style.left=Math.random()*150+"px";
-  noBtn.style.top=Math.random()*120+"px";
-  noBtn.style.transform="scale(.7)";
-}
-
-/* YES */
-function yes(){
-  if(navigator.vibrate) navigator.vibrate([200,100,200]);
-  alert("I love you ❤️");
-}
+}, { once: true });
 </script>
 
 </body>
