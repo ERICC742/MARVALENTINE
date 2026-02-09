@@ -1,373 +1,293 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Valentine’s Day 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Makayla 💜</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Poppins',sans-serif;
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#f3e8ff;
-    animation: glow 8s ease-in-out infinite;
-}
-@keyframes glow{
-    0%{background:#f3e8ff;}
-    50%{background:#ede9fe;}
-    100%{background:#f3e8ff;}
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Press Start 2P',cursive}
+body{background:black;color:#ff4da6;overflow:hidden}
 
-/* START SCREEN */
-#startOverlay{
-    position:fixed;
-    inset:0;
-    background:rgba(245,240,255,.95);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+/* SCREEN SYSTEM */
+.screen{
+  position:absolute;inset:0;
+  display:none;opacity:0;
+  text-align:center;
+  padding:10vh 5vw;
+  transition:opacity .8s ease;
 }
-#startOverlay h1{
-    font-family:'Great Vibes',cursive;
-    font-size:48px;
-    color:#7c3aed;
-    margin-bottom:20px;
-}
-#startOverlay button{
-    padding:15px 30px;
-    font-size:22px;
-    border:none;
-    border-radius:30px;
-    background:#a78bfa;
-    color:white;
-    cursor:pointer;
-}
+.screen.active{display:block;opacity:1}
 
-/* ENVELOPE */
-.envelope{
-    width:260px;
-    height:180px;
-    background:#c4b5fd;
-    border-radius:16px;
-    position:relative;
-    cursor:pointer;
-    box-shadow:0 20px 40px rgba(0,0,0,.25);
-}
-.flap{
-    position:absolute;
-    top:0;
-    width:100%;
-    height:100%;
-    background:#a78bfa;
-    clip-path: polygon(0 0,50% 55%,100% 0);
-    transform-origin:top;
-    transition:4s;
-}
-.envelope.open .flap{transform:rotateX(180deg);}
-.sticker{
-    position:absolute;
-    width:70px;height:70px;
-    background:#fb7185;
-    border-radius:50%;
-    top:55px;left:95px;
-    display:flex;justify-content:center;align-items:center;
-    color:white;font-weight:bold;
-    transition:7s;
-}
-.envelope.open .sticker{transform:scale(0); opacity:0;}
-
-/* LETTER */
-.letter{
-    position:absolute;
-    width:260px;
-    min-height:250px;
-    background:#fffdf5;
-    border-radius:16px;
-    padding:25px;
-    text-align:center;
-    font-family:'Great Vibes',cursive;
-    font-size:20px;
-    box-shadow:0 20px 35px rgba(0,0,0,.25);
-    opacity:0;
-    top:180px;
-    left:50%;
-    transform:translate(-50%,-100%);
-    transition:4s;
-}
-.letter.open{
-    opacity:1;
-    top:50%;
-    transform:translate(-50%,-50%);
-}
-
-/* PHOTOS */
-.photo{
-    width:300px;
-    max-width:90%;
-    display:none;
-    margin:20px auto;
-    object-fit:contain;
-    opacity:0;
-    transition: opacity 2s ease-in-out;
-}
-.photo.show{opacity:1;}
-
-/* POEM */
-.poem{
-    display:none;
-    background:white;
-    padding:20px;
-    border-radius:15px;
-}
-.poem h1{
-    font-family:'Great Vibes',cursive;
-    font-size:36px;
-    color:#7c3aed;
-}
+/* TITLES */
+h1{text-shadow:0 0 15px #ff4da6;font-size:clamp(1.3rem,4vw,2.2rem)}
 
 /* BUTTONS */
 button{
-    padding:10px 25px;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
+  background:black;
+  border:2px solid #ff4da6;
+  color:#ff4da6;
+  padding:14px 22px;
+  margin:12px;
+  font-size:.65rem;
+  cursor:pointer;
+  box-shadow:0 0 10px #ff4da6;
+  transition:.2s;
 }
-.yes{background:#a78bfa;color:white;}
-.no{background:#fda4af;position:relative;}
+button:hover{background:#ff4da6;color:black;transform:scale(1.1)}
+.locked{opacity:.3;pointer-events:none}
+.top-left{position:absolute;top:15px;left:15px;font-size:.5rem}
 
-.final{
-    display:none;
-    font-size:26px;
-    color:#7c3aed;
-    margin-top:15px;
+/* START SCREEN */
+#startScreen{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+#glow{
+  position:absolute;
+  width:200px;height:60px;
+  background:#ff4da6;
+  filter:blur(30px);
+  opacity:.6;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:.5}
+  50%{transform:scale(1.3);opacity:.8}
 }
 
-/* FLOATING HEARTS */
-.heart{
-    position:absolute;
-    bottom:-20px;
-    animation:floatUp 8s linear infinite;
+/* MEMORIES */
+.memories-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
-@keyframes floatUp{
-    from{transform:translateY(0);}
-    to{transform:translateY(-110vh);}
+.memories-grid img{
+  width:100%;
+  border:2px solid #ff4da6;
+  box-shadow:0 0 10px #ff4da6;
+}
+@media(max-width:768px){
+  .memories-grid{grid-template-columns:repeat(2,1fr)}
 }
 
-@media(max-width:600px){
-    .letter{width:90%;}
-    .photo{width:90%;}
+/* LETTER */
+#typedText{
+  margin-top:30px;
+  line-height:1.8;
+  font-size:.6rem;
 }
+
+/* GAME */
+.heart{font-size:2rem}
+#mathBox{margin-top:30px;font-size:.8rem}
+#letters{margin-top:20px;font-size:1.2rem}
+
+/* EQUALIZER */
+.equalizer{display:flex;justify-content:center;gap:6px;margin-top:40px}
+.bar{
+  width:8px;background:#ff4da6;
+  animation:bounce 1s infinite ease-in-out;
+}
+.bar:nth-child(2){animation-delay:.1s}
+.bar:nth-child(3){animation-delay:.2s}
+.bar:nth-child(4){animation-delay:.3s}
+.bar:nth-child(5){animation-delay:.4s}
+@keyframes bounce{
+  0%,100%{height:10px}
+  50%{height:50px}
+}
+
+/* VALENTINE */
+#valentineButtons{position:relative;margin-top:40px}
+#noBtn{position:absolute}
 </style>
 </head>
 
 <body>
 
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mp3">
-</audio>
-<audio id="shutter">
-    <source src="camera.mp3" type="audio/mp3">
-</audio>
+<!-- AUDIO -->
+<audio id="bgMusic" src="music.mp3" loop></audio>
+<audio id="song1" src="songs/song1.mp3"></audio>
+<audio id="song2" src="songs/song2.mp3"></audio>
+<audio id="song3" src="songs/song3.mp3"></audio>
+<audio id="song4" src="songs/song4.mp3"></audio>
+<audio id="song5" src="songs/song5.mp3"></audio>
 
-<div id="startOverlay">
-    <h1>Makayla 💜</h1>
-    <button onclick="startPage()">Click to Start</button>
+<!-- START SCREEN -->
+<div id="startScreen" class="screen active">
+  <h1>VALENTINE’S DAY 2026</h1>
+  <div style="position:relative;margin-top:40px">
+    <div id="glow"></div>
+    <button onclick="start()">START</button>
+  </div>
 </div>
 
-<div class="envelope" id="envelope" onclick="openLetter()">
-    <div class="flap"></div>
-    <div class="sticker">For You</div>
+<!-- PLAYER SELECT -->
+<div id="playerSelect" class="screen">
+  <h1>SELECT MODE</h1>
+  <button onclick="onePlayer()">1 PLAYER</button>
+  <button id="twoPlayerBtn" class="locked" onclick="twoPlayers()">2 PLAYERS</button>
 </div>
 
-<div class="letter" id="letter">
-    <p id="nameWrite"></p>
-    <p>
-        Every moment with you feels special.<br>
-        Your beautiful smile lights up my world,<br>
-        Your green eyes, so beautiful<br>
-        and a personality that truly lights up every room.<br>
-        My favorite memories always include you.
-    </p>
+<!-- 1 PLAYER -->
+<div id="onePlayerScreen" class="screen">
+  <button class="top-left" onclick="backToSelect()">BACK</button>
+  <h1>ACCESS DENIED</h1>
+  <p>NO LONGER AVAILABLE</p>
+</div>
 
-    <!-- 11 Photos -->
-    <img src="photo1.jpeg" class="photo" id="p1">
-    <img src="photo2.jpeg" class="photo" id="p2">
-    <img src="photo3.jpeg" class="photo" id="p3">
-    <img src="photo4.jpeg" class="photo" id="p4">
-    <img src="photo5.jpeg" class="photo" id="p5">
-    <img src="photo6.jpeg" class="photo" id="p6">
-    <img src="photo7.jpeg" class="photo" id="p7">
-    <img src="photo8.jpeg" class="photo" id="p8">
-    <img src="photo9.jpeg" class="photo" id="p9">
-    <img src="photo10.jpeg" class="photo" id="p10">
-    <img src="photo11.jpeg" class="photo" id="p11">
+<!-- 2 PLAYER MENU -->
+<div id="twoPlayerScreen" class="screen">
+  <button class="top-left" onclick="backToSelect()">MENU</button>
+  <button onclick="showScreen('memories')">MEMORIES</button><br>
+  <button onclick="showScreen('songs')">TOP 5 SONGS</button><br>
+  <button onclick="showScreen('letter')">A LETTER</button><br>
+  <button onclick="showScreen('game')">INTERACTIVE GAME</button><br>
+  <button onclick="showScreen('video')">OUR VIDEO</button>
+</div>
 
-    <div class="poem" id="poem">
-        <h1 id="typeText"></h1>
-        <div id="buttons" style="display:none;">
-            <button class="yes" onclick="accept()">Yes 💜</button>
-            <button class="no" id="noBtn">No 🙈</button>
-        </div>
-    </div>
+<!-- MEMORIES -->
+<div id="memories" class="screen">
+  <button class="top-left" onclick="twoPlayers()">BACK</button>
+  <h1>OUR MEMORIES</h1>
+  <div class="memories-grid">
+    <img src="memories/pic1.jpg"><img src="memories/pic2.jpg">
+    <img src="memories/pic3.jpg"><img src="memories/pic4.jpg">
+    <img src="memories/pic5.jpg"><img src="memories/pic6.jpg">
+    <img src="memories/pic7.jpg"><img src="memories/pic8.jpg">
+  </div>
+</div>
 
-    <div class="final" id="final">
-        You make me the happiest person alive !!
-    </div>
+<!-- SONGS -->
+<div id="songs" class="screen">
+  <button class="top-left" onclick="exitSongs()">BACK</button>
+  <h1>TOP 5 SONGS</h1>
+  <div class="equalizer">
+    <div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<div id="letter" class="screen">
+  <button class="top-left" onclick="twoPlayers()">BACK</button>
+  <h1>MY LETTER</h1>
+  <div id="typedText"></div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+  <button class="top-left" onclick="twoPlayers()">BACK</button>
+  <h1>SOLVE THE CODE</h1>
+  <div id="mathBox"></div>
+  <div id="letters"></div>
+</div>
+
+<!-- VALENTINE -->
+<div id="valentine" class="screen">
+  <h1>Will you be my Valentine? ❤️</h1>
+  <div id="valentineButtons">
+    <button onclick="yes()">YES</button>
+    <button id="noBtn">NO</button>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div id="video" class="screen">
+  <button class="top-left" onclick="twoPlayers()">BACK</button>
+  <h1>US ❤️</h1>
+  <video src="video.mp4" muted autoplay loop width="80%"></video>
 </div>
 
 <script>
-// START BUTTON — music starts on click
-function startPage(){
-    document.getElementById("startOverlay").style.display = "none";
-    document.getElementById("music").play().catch(()=>{}); // music starts here
+/* SCREEN CONTROL */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
-
-// Envelope open
-function openLetter(){
-    document.getElementById("envelope").classList.add("open");
-    confetti();
-    setTimeout(()=>{
-        document.getElementById("envelope").style.display="none";
-        document.getElementById("letter").classList.add("open");
-        writeName();
-        hearts();
-        setTimeout(removeLetter,15000);
-    },1000);
+function start(){
+  bgMusic.play();
+  showScreen('playerSelect');
 }
-
-// Handwritten name
-function writeName(){
-    const t="Dear Makayla,";
-    let i=0;
-    const el=document.getElementById("nameWrite");
-    const x=setInterval(()=>{
-        el.innerHTML+=t.charAt(i);
-        i++;
-        if(i>=t.length) clearInterval(x);
-    },120);
+function backToSelect(){
+  document.getElementById('twoPlayerBtn').classList.remove('locked');
+  showScreen('playerSelect');
 }
+function onePlayer(){showScreen('onePlayerScreen')}
+function twoPlayers(){showScreen('twoPlayerScreen')}
 
-// Remove letter after 15s
-function removeLetter(){
-    document.getElementById("letter").style.background="transparent";
-    document.getElementById("letter").style.boxShadow="none";
-    document.querySelectorAll("p").forEach(p=>p.style.display="none");
-    slideshow();
+/* LETTER TYPEWRITER */
+const letterText = `You’re my favorite place to be.
+
+Every laugh.
+Every late night.
+Every memory.
+
+I’d choose you in every lifetime.`;
+let i=0;
+function typeLetter(){
+  if(i < letterText.length){
+    typedText.innerHTML += letterText.charAt(i);
+    i++;
+    setTimeout(typeLetter,40);
+  }
 }
+document.querySelector("button[onclick=\"showScreen('letter')\"]").onclick=()=>{
+  typedText.innerHTML="";
+  i=0;
+  showScreen('letter');
+  typeLetter();
+};
 
-// Slideshow 11 photos, 6s each
-function slideshow(){
-    let time=0;
-    const duration=6000;
-    for(let i=1;i<=11;i++){
-        setTimeout(()=>show(i),time);
-        setTimeout(()=>hide(i),time+duration);
-        time+=duration+200;
-    }
-    setTimeout(()=>{
-        document.getElementById("poem").style.display="block";
-        typeText();
-    },time);
+/* MATH GAME */
+const puzzles = [
+  {q:"3 + 6 =",a:9,l:"I"},
+  {q:"10 - 8 =",a:2,l:"L"},
+  {q:"4 + 11 =",a:15,l:"O"},
+  {q:"6 + 16 =",a:22,l:"V"},
+  {q:"7 + 24 =",a:31,l:"E"},
+  {q:"2 + 23 =",a:25,l:"Y"},
+  {q:"9 + 6 =",a:15,l:"O"},
+  {q:"10 + 11 =",a:21,l:"U"}
+];
+let step=0, word="";
+function loadPuzzle(){
+  if(step>=puzzles.length){showScreen('valentine');return;}
+  mathBox.innerHTML=`${puzzles[step].q}
+  <input id="ans" type="number">
+  <button onclick="check()">OK</button>`;
 }
-
-// Show photo
-function show(i){
-    let p=document.getElementById("p"+i);
-    p.style.display="block";
-    setTimeout(()=>p.classList.add("show"),50);
-    document.getElementById("shutter").play();
-    sparkle();
+function check(){
+  const v=document.getElementById('ans').value;
+  if(Number(v)===puzzles[step].a){
+    word+=puzzles[step].l;
+    letters.innerHTML=word;
+    step++;loadPuzzle();
+  }
 }
+document.querySelector("button[onclick=\"showScreen('game')\"]").onclick=()=>{
+  step=0;word="";letters.innerHTML="";
+  showScreen('game');loadPuzzle();
+};
 
-// Hide photo
-function hide(i){
-    let p=document.getElementById("p"+i);
-    p.classList.remove("show");
-    setTimeout(()=>p.style.display="none",1500);
-}
+/* NO BUTTON */
+noBtn.onmouseover=()=>{
+  noBtn.style.left=Math.random()*200+"px";
+  noBtn.style.top=Math.random()*100+"px";
+  noBtn.style.transform="scale(.7)";
+};
 
-// Type Valentine message
-function typeText(){
-    const text="Will you be my Valentine? 💜";
-    let i=0;
-    const el=document.getElementById("typeText");
-    const t=setInterval(()=>{
-        el.innerHTML+=text.charAt(i);
-        i++;
-        if(i>=text.length){
-            clearInterval(t);
-            document.getElementById("buttons").style.display="block";
-        }
-    },80);
-}
-
-// Accept / Yes button
-function accept(){
-    document.getElementById("poem").style.display="none";
-    document.getElementById("final").style.display="block";
-}
-
-// No button runs away
-document.getElementById("noBtn").addEventListener("mouseenter",()=>{
-    document.getElementById("noBtn").style.transform=
-        `translate(${Math.random()*200-100}px,${Math.random()*150-75}px)`;
-});
-
-// Hearts
-function hearts(){
-    setInterval(()=>{
-        let h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="💜";
-        h.style.left=Math.random()*100+"vw";
-        h.style.fontSize=(Math.random()*20+15)+"px";
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),8000);
-    },600);
-}
-
-// Confetti burst
-function confetti(){
-    for(let i=0;i<40;i++){
-        let c=document.createElement("div");
-        c.style.position="absolute";
-        c.style.width="8px";
-        c.style.height="8px";
-        c.style.background=["#fb7185","#a78bfa","#c4b5fd","#fde68a"][Math.floor(Math.random()*4)];
-        c.style.left=Math.random()*100+"vw";
-        c.style.top="0";
-        c.style.borderRadius="50%";
-        document.body.appendChild(c);
-        c.animate([{transform:"translateY(0)"},{transform:`translateY(${window.innerHeight}px)`}],
-            {duration:3000+Math.random()*2000});
-        setTimeout(()=>c.remove(),5000);
-    }
-}
-
-// Sparkles
-function sparkle(){
-    for(let i=0;i<15;i++){
-        let s=document.createElement("div");
-        s.innerHTML="✨";
-        s.style.position="absolute";
-        s.style.left=Math.random()*100+"vw";
-        s.style.top=Math.random()*100+"vh";
-        document.body.appendChild(s);
-        s.animate([{opacity:1},{opacity:0}],{duration:1500});
-        setTimeout(()=>s.remove(),1500);
-    }
+/* YES */
+function yes(){
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+  alert("I love you ❤️");
 }
 </script>
+
 </body>
 </html>
 
