@@ -114,19 +114,12 @@ button:active {
   white-space: pre-wrap;
 }
 
-/* ---------- GAME ---------- */
-#gameScreen .mathProblem {
-  font-size: 0.9rem;
-  margin: 10px 0;
-}
-
-#valentinePrompt {
+/* ---------- SNAKE GAME ---------- */
+#snakeCanvas {
+  background: #000;
+  display: block;
   margin-top: 20px;
-}
-
-#noBtn {
-  position: relative;
-  transition: all 0.2s ease;
+  border: 2px solid #c77dff;
 }
 </style>
 </head>
@@ -159,9 +152,9 @@ button:active {
 <div id="hubScreen" class="screen">
   <div class="title">SELECT MODE</div>
   <button id="memoriesBtn">MEMORIES</button>
-  <button id="topSongsBtn">TOP 5 SONGS</button>
-  <button id="letterBtn">A LETTER</button>
-  <button id="gameBtn">GAME</button>
+  <button id="topSongsBtn">THINKING OF YOU SONGS</button>
+  <button id="letterBtn">A LETTER FOR YOU</button>
+  <button id="gameBtn">SNAKE GAME</button>
   <button id="videoBtn">VIDEO</button>
 </div>
 
@@ -170,16 +163,16 @@ button:active {
   <div class="title">MEMORIES</div>
   <div class="photos">
     <div class="column">
-      <img src="photo1.jpg" alt="">
-      <img src="photo2.jpg" alt="">
-      <img src="photo3.jpg" alt="">
-      <img src="photo4.jpg" alt="">
+      <img src="photo1.jpeg" alt="">
+      <img src="photo2.jpeg" alt="">
+      <img src="photo3.jpeg" alt="">
+      <img src="photo4.jpeg" alt="">
     </div>
     <div class="column">
-      <img src="photo5.jpg" alt="">
-      <img src="photo6.jpg" alt="">
-      <img src="photo7.jpg" alt="">
-      <img src="photo8.jpg" alt="">
+      <img src="photo5.jpeg" alt="">
+      <img src="photo6.jpeg" alt="">
+      <img src="photo7.jpeg" alt="">
+      <img src="photo8.jpeg" alt="">
     </div>
   </div>
   <button class="backBtn">RETURN</button>
@@ -187,37 +180,28 @@ button:active {
 
 <!-- TOP 5 SONGS PAGE -->
 <div id="topSongsScreen" class="screen">
-  <div class="title">TOP 5 SONGS</div>
+  <div class="title">THINKING OF YOU SONGS</div>
   <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
-    <button class="songBtn">Song 1</button>
-    <button class="songBtn">Song 2</button>
-    <button class="songBtn">Song 3</button>
-    <button class="songBtn">Song 4</button>
-    <button class="songBtn">Song 5</button>
+    <button class="songBtn">Song_1</button>
+    <button class="songBtn">Song_2</button>
+    <button class="songBtn">Song_3</button>
+    <button class="songBtn">Song_4</button>
+    <button class="songBtn">Song_5</button>
   </div>
   <button class="backBtn">RETURN</button>
 </div>
 
 <!-- LETTER PAGE -->
 <div id="letterScreen" class="screen">
-  <div class="title">A LETTER</div>
+  <div class="title">A LETTER FOR YOU</div>
   <p id="letterText"></p>
   <button class="backBtn">RETURN</button>
 </div>
 
-<!-- GAME PAGE -->
+<!-- GAME PAGE (SNAKE) -->
 <div id="gameScreen" class="screen">
-  <div class="title">GAME</div>
-  <div id="mathContainer">
-    <div class="mathProblem" id="problemText"></div>
-    <input type="number" id="answerInput" placeholder="Enter answer" style="padding:8px; margin-top:10px; width:100px;">
-    <button id="submitAnswer">Submit</button>
-  </div>
-  <div id="valentinePrompt" style="display:none;">
-    <p>Will you be my Valentine?</p>
-    <button id="yesBtn">YES</button>
-    <button id="noBtn">NO</button>
-  </div>
+  <div class="title">SNAKE GAME</div>
+  <canvas id="snakeCanvas"></canvas>
   <button class="backBtn" style="margin-top:20px;">RETURN</button>
 </div>
 
@@ -230,8 +214,8 @@ button:active {
 
 <script>
 /* ---------- CORE NAVIGATION ---------- */
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(screen => {
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(screen=>{
     screen.classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -280,7 +264,7 @@ const videoBtn = document.getElementById("videoBtn");
 memoriesBtn.addEventListener("click", () => showScreen("memoriesScreen"));
 topSongsBtn.addEventListener("click", () => showScreen("topSongsScreen"));
 letterBtn.addEventListener("click", () => showScreen("letterScreen"));
-gameBtn.addEventListener("click", () => showScreen("gameScreen"));
+gameBtn.addEventListener("click", () => { showScreen("gameScreen"); startSnakeGame(); });
 videoBtn.addEventListener("click", () => showScreen("videoScreen"));
 
 /* ---------- SONG BUTTONS ---------- */
@@ -310,59 +294,92 @@ letterBtn.addEventListener("click", () => {
   typeLetter();
 });
 
-/* ---------- MATH GAME ---------- */
-const problems = [
-  { q: "2 + 2", a: 4 },
-  { q: "5 * 3", a: 15 },
-  { q: "10 - 6", a: 4 },
-  { q: "8 / 2", a: 4 },
-  { q: "7 + 7", a: 14 }
-];
-let currentProblem = 0;
-const problemText = document.getElementById("problemText");
-const answerInput = document.getElementById("answerInput");
-const submitAnswer = document.getElementById("submitAnswer");
-const mathContainer = document.getElementById("mathContainer");
-const valentinePrompt = document.getElementById("valentinePrompt");
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
+/* ---------- SNAKE GAME ---------- */
+function startSnakeGame() {
+  const canvas = document.getElementById("snakeCanvas");
+  canvas.width = window.innerWidth - 40;
+  canvas.height = window.innerHeight - 100;
+  const ctx = canvas.getContext("2d");
+  
+  const scale = 20;
+  let snake = [{x: 10, y:10}];
+  let dx = scale;
+  let dy = 0;
+  let food = {x: Math.floor(Math.random()*canvas.width/scale)*scale,
+              y: Math.floor(Math.random()*canvas.height/scale)*scale};
+  let trail = [];
+  const message = "I LOVE YOU";
 
-function showNextProblem(){
-  if(currentProblem < problems.length){
-    problemText.textContent = problems[currentProblem].q;
-    answerInput.value = "";
-  } else {
-    mathContainer.style.display = "none";
-    valentinePrompt.style.display = "block";
+  function draw() {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // draw food
+    ctx.fillStyle = "#ff77ff";
+    ctx.fillRect(food.x,food.y,scale,scale);
+
+    // draw snake
+    ctx.fillStyle = "#c77dff";
+    snake.forEach((s,i)=>{
+      ctx.fillRect(s.x,s.y,scale,scale);
+    });
+
+    // trail spelling I LOVE YOU
+    ctx.fillStyle = "#ff99ff";
+    for(let i=0;i<trail.length;i++){
+      const t = trail[i];
+      const char = message[i % message.length];
+      ctx.font = `${scale}px 'Press Start 2P'`;
+      ctx.fillText(char,t.x,t.y+scale-4);
+    }
   }
+
+  function update() {
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+
+    // leave trail
+    trail.push({x: head.x, y: head.y});
+    if(trail.length > message.length) trail.shift();
+
+    // check food collision
+    if(head.x === food.x && head.y === food.y){
+      food.x = Math.floor(Math.random()*canvas.width/scale)*scale;
+      food.y = Math.floor(Math.random()*canvas.height/scale)*scale;
+    } else {
+      snake.pop();
+    }
+
+    // wall collision
+    if(head.x < 0) head.x = canvas.width-scale;
+    if(head.x >= canvas.width) head.x = 0;
+    if(head.y < 0) head.y = canvas.height-scale;
+    if(head.y >= canvas.height) head.y = 0;
+  }
+
+  function gameLoop(){
+    update();
+    draw();
+  }
+
+  let gameInterval = setInterval(gameLoop,100);
+
+  window.addEventListener("keydown",(e)=>{
+    switch(e.key){
+      case "ArrowUp": if(dy===0){dx=0;dy=-scale;} break;
+      case "ArrowDown": if(dy===0){dx=0;dy=scale;} break;
+      case "ArrowLeft": if(dx===0){dx=-scale;dy=0;} break;
+      case "ArrowRight": if(dx===0){dx=scale;dy=0;} break;
+    }
+  });
+
+  // reset snake when leaving screen
+  document.querySelector("#gameScreen .backBtn").addEventListener("click",()=>{
+    clearInterval(gameInterval);
+  });
 }
-
-submitAnswer.addEventListener("click", () => {
-  const ans = Number(answerInput.value);
-  if(ans === problems[currentProblem].a){
-    currentProblem++;
-    showNextProblem();
-  } else {
-    alert("Try again!");
-  }
-});
-
-gameBtn.addEventListener("click", () => {
-  currentProblem = 0;
-  mathContainer.style.display = "block";
-  valentinePrompt.style.display = "none";
-  showNextProblem();
-});
-
-/* ---------- NO BUTTON MISCHIEF ---------- */
-noBtn.addEventListener("mouseenter", () => {
-  const x = Math.random()*150 - 75;
-  const y = Math.random()*150 - 75;
-  noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.7)`;
-});
-yesBtn.addEventListener("click", () => alert("Yay! ❤️ You are my Valentine!"));
 </script>
-
 </body>
 </html>
+
 
