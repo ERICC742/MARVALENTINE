@@ -50,7 +50,6 @@ button {
 button:active {transform:scale(.95)}
 
 #startBtn {
-  position:relative;
   animation:glowPulse 2s infinite;
 }
 @keyframes glowPulse {
@@ -58,8 +57,11 @@ button:active {transform:scale(.95)}
   100%{box-shadow:0 0 35px #e0aaff}
 }
 
-/* Memories */
-#memoriesScreen .photos {display:flex;gap:20px;margin-top:20px;}
+#memoriesScreen .photos {
+  display:flex;
+  gap:20px;
+  margin-top:20px;
+}
 #memoriesScreen img {
   width:150px;
   height:200px;
@@ -67,7 +69,6 @@ button:active {transform:scale(.95)}
   border:2px solid #c77dff;
 }
 
-/* Letter */
 #letterScreen p {
   width:80%;
   max-width:400px;
@@ -76,14 +77,12 @@ button:active {transform:scale(.95)}
   white-space:pre-wrap;
 }
 
-/* Snake */
 #snakeCanvas {
   background:#000;
   border:2px solid #c77dff;
   touch-action:none;
 }
 
-/* iPod */
 .ipod {
   width:300px;
   background:#222;
@@ -97,15 +96,19 @@ button:active {transform:scale(.95)}
   object-fit:cover;
   border:2px solid #c77dff;
 }
-.controls {display:flex;gap:15px;justify-content:center;margin-top:10px;}
+.controls {
+  display:flex;
+  gap:15px;
+  justify-content:center;
+  margin-top:10px;
+}
 .songTitle {font-size:.7rem;margin:5px 0;}
 </style>
 </head>
 
 <body>
 
-<!-- BACKGROUND MUSIC -->
-<audio id="bgMusic" src="music.mp3" loop playsinline></audio>
+<audio id="bgMusic" src="music.mp3" loop></audio>
 
 <!-- START -->
 <div id="startScreen" class="screen active">
@@ -138,8 +141,10 @@ button:active {transform:scale(.95)}
 <div id="memoriesScreen" class="screen">
   <div class="title">MEMORIES</div>
   <div class="photos">
-    <img src="photo1.jpeg"><img src="photo2.jpeg">
-    <img src="photo3.jpeg"><img src="photo4.jpeg">
+    <img src="photo1.jpeg">
+    <img src="photo2.jpeg">
+    <img src="photo3.jpeg">
+    <img src="photo4.jpeg">
   </div>
   <button class="backBtn">RETURN</button>
 </div>
@@ -192,35 +197,45 @@ button:active {transform:scale(.95)}
 </div>
 
 <script>
-/* ---------- SCREENS ---------- */
+const screens=document.querySelectorAll(".screen");
+const bgMusic=document.getElementById("bgMusic");
+
 function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  screens.forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-/* ---------- BACKGROUND MUSIC ---------- */
-const bgMusic=document.getElementById("bgMusic");
-let bgStarted=false;
-
+/* START FLOW */
 startBtn.onclick=()=>{
   showScreen("playerSelect");
-  if(!bgStarted){
-    bgMusic.currentTime=0;
-    bgMusic.volume=.5;
-    bgMusic.play().catch(()=>{});
-    bgStarted=true;
-  }
+  bgMusic.volume=.5;
+  bgMusic.play().catch(()=>{});
 };
 
 onePlayerBtn.onclick=()=>showScreen("lockedScreen");
 returnBtn.onclick=()=>showScreen("playerSelect");
 twoPlayerBtn.onclick=()=>showScreen("hubScreen");
 
+/* HUB BUTTONS */
+memoriesBtn.onclick=()=>showScreen("memoriesScreen");
+videoBtn.onclick=()=>showScreen("videoScreen");
+
 topSongsBtn.onclick=()=>{
   bgMusic.pause();
   showScreen("topSongsScreen");
 };
 
+letterBtn.onclick=()=>{
+  showScreen("letterScreen");
+  startLetter();
+};
+
+gameBtn.onclick=()=>{
+  showScreen("gameScreen");
+  startSnake();
+};
+
+/* BACK BUTTONS */
 document.querySelectorAll(".backBtn").forEach(b=>{
   b.onclick=()=>{
     showScreen("hubScreen");
@@ -228,7 +243,7 @@ document.querySelectorAll(".backBtn").forEach(b=>{
   };
 });
 
-/* ---------- LETTER ---------- */
+/* LETTER */
 const letter=`Dear Love,
 
 Every moment with you feels like home.
@@ -246,9 +261,8 @@ function startLetter(){
     }
   })();
 }
-letterBtn.onclick=()=>{showScreen("letterScreen");startLetter();};
 
-/* ---------- SONG PLAYER ---------- */
+/* SONG PLAYER */
 const songBtns=document.querySelectorAll(".songBtn");
 let currentSong=0;
 
@@ -272,12 +286,7 @@ playBtn.onclick=()=>audioPlayer.paused?audioPlayer.play():audioPlayer.pause();
 prevBtn.onclick=()=>{currentSong=(currentSong-1+songBtns.length)%songBtns.length;loadSong();audioPlayer.play();};
 nextBtn.onclick=()=>{currentSong=(currentSong+1)%songBtns.length;loadSong();audioPlayer.play();};
 
-/* ---------- SNAKE GAME ---------- */
-gameBtn.onclick=()=>{
-  showScreen("gameScreen");
-  startSnake();
-};
-
+/* SNAKE */
 function startSnake(){
   const canvas=snakeCanvas;
   canvas.width=innerWidth-40;
@@ -289,24 +298,15 @@ function startSnake(){
 
   function loop(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
     snake[0].x+=(target.x-snake[0].x)*.2;
     snake[0].y+=(target.y-snake[0].y)*.2;
-
-    for(let i=1;i<snake.length;i++){
-      snake[i].x+=(snake[i-1].x-snake[i].x)*.3;
-      snake[i].y+=(snake[i-1].y-snake[i].y)*.3;
-    }
-
     if(snake.length<30) snake.push({...snake.at(-1)});
-
     ctx.fillStyle="#c77dff";
     snake.forEach(s=>{
       ctx.beginPath();
       ctx.arc(s.x,s.y,8,0,Math.PI*2);
       ctx.fill();
     });
-
     requestAnimationFrame(loop);
   }
   loop();
@@ -321,4 +321,3 @@ function startSnake(){
 
 </body>
 </html>
-
