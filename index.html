@@ -9,48 +9,105 @@
 
 <style>
 * {margin:0;padding:0;box-sizing:border-box;font-family:'Press Start 2P', cursive;}
-body {background: radial-gradient(circle,#1a0033,#000);color:#c77dff;height:100vh;overflow:hidden;}
+body {
+  background: radial-gradient(circle,#1a0033,#000);
+  color:#c77dff;
+  height:100vh;
+  overflow:hidden;
+}
 
-/* ---------- SCREEN SYSTEM ---------- */
-.screen {position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-.screen.active {display:flex;animation:fade 0.6s ease forwards;}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+.screen {
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.screen.active {
+  display:flex;
+  animation:fade .6s ease forwards;
+}
+@keyframes fade {from{opacity:0}to{opacity:1}}
 
-/* ---------- TITLE ---------- */
-.title {font-size:1.3rem;margin-bottom:20px;text-shadow:0 0 12px #9d4edd,0 0 30px #7b2cbf;}
+.title {
+  font-size:1.3rem;
+  margin-bottom:20px;
+  text-shadow:0 0 12px #9d4edd,0 0 30px #7b2cbf;
+}
 
-/* ---------- BUTTONS ---------- */
-button {background:transparent;color:#fff;border:3px solid #c77dff;padding:12px 24px;font-size:0.8rem;margin:10px 0;cursor:pointer;box-shadow:0 0 15px #9d4edd;}
-button:active{transform:scale(0.95);}
-#startBtn {position:relative;animation:glowPulse 2s infinite;}
-#startBtn::before{content:"";position:absolute;inset:-18px;background:radial-gradient(circle,rgba(157,78,221,0.6),transparent 70%);z-index:-1;}
-@keyframes glowPulse{0%{box-shadow:0 0 12px #7b2cbf}100%{box-shadow:0 0 35px #e0aaff}}
+button {
+  background:transparent;
+  color:#fff;
+  border:3px solid #c77dff;
+  padding:12px 24px;
+  font-size:.8rem;
+  margin:10px 0;
+  cursor:pointer;
+  box-shadow:0 0 15px #9d4edd;
+}
+button:active {transform:scale(.95)}
 
-/* ---------- MEMORIES GRID ---------- */
+#startBtn {
+  position:relative;
+  animation:glowPulse 2s infinite;
+}
+@keyframes glowPulse {
+  0%{box-shadow:0 0 12px #7b2cbf}
+  100%{box-shadow:0 0 35px #e0aaff}
+}
+
+/* Memories */
 #memoriesScreen .photos {display:flex;gap:20px;margin-top:20px;}
-#memoriesScreen .column {display:flex;flex-direction:column;gap:15px;}
-#memoriesScreen img {width:150px;height:200px;object-fit:cover;border:2px solid #c77dff;box-shadow:0 0 10px #9d4edd;}
+#memoriesScreen img {
+  width:150px;
+  height:200px;
+  object-fit:cover;
+  border:2px solid #c77dff;
+}
 
-/* ---------- LETTER ---------- */
-#letterScreen p {width:80%;max-width:400px;font-size:0.7rem;line-height:1.3;white-space:pre-wrap;}
+/* Letter */
+#letterScreen p {
+  width:80%;
+  max-width:400px;
+  font-size:.7rem;
+  line-height:1.4;
+  white-space:pre-wrap;
+}
 
-/* ---------- SNAKE ---------- */
-#snakeCanvas {background:#000;display:block;margin-top:20px;border:2px solid #c77dff;touch-action:none;}
+/* Snake */
+#snakeCanvas {
+  background:#000;
+  border:2px solid #c77dff;
+  touch-action:none;
+}
 
-/* ---------- RETRO IPOD SONG ---------- */
-.ipod {width:300px;background:#222;border:3px solid #c77dff;border-radius:20px;padding:10px;display:flex;flex-direction:column;align-items:center;}
-.cover {width:200px;height:200px;margin-bottom:10px;border:2px solid #c77dff;object-fit:cover;}
-.controls {display:flex;gap:15px;margin-top:10px;}
-.controls button {padding:10px 15px;font-size:0.7rem;}
-.songTitle {margin:5px 0;font-size:0.7rem;text-align:center;}
+/* iPod */
+.ipod {
+  width:300px;
+  background:#222;
+  border:3px solid #c77dff;
+  border-radius:20px;
+  padding:10px;
+}
+.cover {
+  width:200px;
+  height:200px;
+  object-fit:cover;
+  border:2px solid #c77dff;
+}
+.controls {display:flex;gap:15px;justify-content:center;margin-top:10px;}
+.songTitle {font-size:.7rem;margin:5px 0;}
 </style>
 </head>
+
 <body>
 
-<!-- MUSIC -->
+<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" src="music.mp3" loop playsinline></audio>
 
-<!-- START SCREEN -->
+<!-- START -->
 <div id="startScreen" class="screen active">
   <div class="title">VALENTINE’S DAY 2026</div>
   <button id="startBtn">START</button>
@@ -62,16 +119,14 @@ button:active{transform:scale(0.95);}
   <button id="twoPlayerBtn">2 PLAYERS</button>
 </div>
 
-<!-- 1 PLAYER LOCKED -->
+<!-- LOCKED -->
 <div id="lockedScreen" class="screen">
   <div class="title">ACCESS DENIED</div>
-  <p style="font-size:0.6rem;margin:20px;">NO LONGER AVAILABLE</p>
-  <button id="returnBtn">RETURN TO MAIN MENU</button>
+  <button id="returnBtn">RETURN</button>
 </div>
 
-<!-- 2 PLAYER HUB -->
+<!-- HUB -->
 <div id="hubScreen" class="screen">
-  <div class="title">SELECT MODE</div>
   <button id="memoriesBtn">MEMORIES</button>
   <button id="topSongsBtn">TOP 5 SONGS</button>
   <button id="letterBtn">A LETTER</button>
@@ -83,42 +138,29 @@ button:active{transform:scale(0.95);}
 <div id="memoriesScreen" class="screen">
   <div class="title">MEMORIES</div>
   <div class="photos">
-    <div class="column">
-      <img src="photo1.jpeg" alt="">
-      <img src="photo2.jpeg" alt="">
-      <img src="photo3.jpeg" alt="">
-      <img src="photo4.jpeg" alt="">
-    </div>
-    <div class="column">
-      <img src="photo10.jpeg" alt="">
-      <img src="photo6.jpeg" alt="">
-      <img src="photo7.jpeg" alt="">
-      <img src="photo8.jpeg" alt="">
-    </div>
+    <img src="photo1.jpeg"><img src="photo2.jpeg">
+    <img src="photo3.jpeg"><img src="photo4.jpeg">
   </div>
   <button class="backBtn">RETURN</button>
 </div>
 
-<!-- TOP 5 SONGS -->
+<!-- TOP SONGS -->
 <div id="topSongsScreen" class="screen">
   <div class="title">TOP 5 SONGS</div>
-  <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
-    <button class="songBtn" data-song="song1.mp3" data-cover="COVER 1.jpeg">Classy 101</button>
-    <button class="songBtn" data-song="song2.mp3" data-cover="COVER 2.jpeg">Hasta La Raiz</button>
-    <button class="songBtn" data-song="song3.mp3" data-cover="COVER 3.jpeg">For You</button>
-    <button class="songBtn" data-song="song4.mp3" data-cover="COVER 4.jpeg">Green Eyes</button>
-    <button class="songBtn" data-song="song5.mp3" data-cover="COVER 5.jpeg">Tu vida y Mi vida</button>
-  </div>
+  <button class="songBtn" data-song="song1.mp3" data-cover="cover1.jpeg">Classy 101</button>
+  <button class="songBtn" data-song="song2.mp3" data-cover="cover2.jpeg">Hasta La Raíz</button>
+  <button class="songBtn" data-song="song3.mp3" data-cover="cover3.jpeg">For You</button>
+  <button class="songBtn" data-song="song4.mp3" data-cover="cover4.jpeg">Green Eyes</button>
+  <button class="songBtn" data-song="song5.mp3" data-cover="cover5.jpeg">Tu Vida y Mi Vida</button>
   <button class="backBtn">RETURN</button>
 </div>
 
 <!-- SONG PLAYER -->
 <div id="songPlayerScreen" class="screen">
-  <div class="title">Now Playing</div>
   <div class="ipod">
-    <img class="cover" id="songCover" src="" alt="Cover">
-    <div class="songTitle" id="songTitle">Song</div>
-    <audio id="audioPlayer" src=""></audio>
+    <img id="songCover" class="cover">
+    <div id="songTitle" class="songTitle"></div>
+    <audio id="audioPlayer"></audio>
     <div class="controls">
       <button id="prevBtn">◀</button>
       <button id="playBtn">▶</button>
@@ -135,11 +177,11 @@ button:active{transform:scale(0.95);}
   <button class="backBtn">RETURN</button>
 </div>
 
-<!-- SNAKE GAME -->
+<!-- GAME -->
 <div id="gameScreen" class="screen">
   <div class="title">SNAKE GAME</div>
   <canvas id="snakeCanvas"></canvas>
-  <button class="backBtn" style="margin-top:20px;">RETURN</button>
+  <button class="backBtn">RETURN</button>
 </div>
 
 <!-- VIDEO -->
@@ -150,164 +192,133 @@ button:active{transform:scale(0.95);}
 </div>
 
 <script>
-/* ---------- NAVIGATION ---------- */
+/* ---------- SCREENS ---------- */
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-/* ---------- AUDIO ---------- */
+/* ---------- BACKGROUND MUSIC ---------- */
 const bgMusic=document.getElementById("bgMusic");
-let bgVolume=0.5;
-startBtn.addEventListener("click",()=>{
-  if(navigator.vibrate) navigator.vibrate(40);
+let bgStarted=false;
+
+startBtn.onclick=()=>{
   showScreen("playerSelect");
-  bgMusic.volume=bgVolume;
-  bgMusic.play().catch(()=>{});
-});
-onePlayerBtn.addEventListener("click",()=>showScreen("lockedScreen"));
-returnBtn.addEventListener("click",()=>showScreen("playerSelect"));
-twoPlayerBtn.addEventListener("click",()=>showScreen("hubScreen"));
-document.addEventListener("touchstart",()=>{if(bgMusic.paused) bgMusic.play().catch(()=>{});},{once:true});
+  if(!bgStarted){
+    bgMusic.currentTime=0;
+    bgMusic.volume=.5;
+    bgMusic.play().catch(()=>{});
+    bgStarted=true;
+  }
+};
 
-/* ---------- HUB BUTTONS ---------- */
-const memoriesBtn=document.getElementById("memoriesBtn");
-const topSongsBtn=document.getElementById("topSongsBtn");
-const letterBtn=document.getElementById("letterBtn");
-const gameBtn=document.getElementById("gameBtn");
-const videoBtn=document.getElementById("videoBtn");
+onePlayerBtn.onclick=()=>showScreen("lockedScreen");
+returnBtn.onclick=()=>showScreen("playerSelect");
+twoPlayerBtn.onclick=()=>showScreen("hubScreen");
 
-memoriesBtn.addEventListener("click",()=>showScreen("memoriesScreen"));
-letterBtn.addEventListener("click",()=>{showScreen("letterScreen");startLetter();});
-gameBtn.addEventListener("click",()=>{showScreen("gameScreen");startSnakeDrag();});
-videoBtn.addEventListener("click",()=>showScreen("videoScreen"));
-
-/* ---------- FADE AUDIO ---------- */
-function fadeAudio(audio, targetVolume, duration=500){
-  const stepTime=50;
-  const steps=duration/stepTime;
-  const volumeStep=(targetVolume-audio.volume)/steps;
-  let currentStep=0;
-  const fadeInterval=setInterval(()=>{
-    currentStep++;
-    audio.volume+=volumeStep;
-    if(currentStep>=steps){
-      audio.volume=targetVolume;
-      clearInterval(fadeInterval);
-    }
-  },stepTime);
-}
-
-/* TOP 5 SONGS WITH FADE */
-const topSongsScreen=document.getElementById("topSongsScreen");
-const songBackBtns=topSongsScreen.querySelectorAll(".backBtn");
-
-topSongsBtn.addEventListener("click",()=>{
-  fadeAudio(bgMusic,0,500);
+topSongsBtn.onclick=()=>{
+  bgMusic.pause();
   showScreen("topSongsScreen");
-});
+};
 
-songBackBtns.forEach(btn=>{
-  btn.addEventListener("click",()=>{
+document.querySelectorAll(".backBtn").forEach(b=>{
+  b.onclick=()=>{
     showScreen("hubScreen");
-    fadeAudio(bgMusic,bgVolume,500);
-  });
+    if(bgMusic.paused) bgMusic.play().catch(()=>{});
+  };
 });
 
-/* ---------- BACK BUTTONS ---------- */
-document.querySelectorAll(".backBtn").forEach(btn=>{
-  btn.addEventListener("click",()=>showScreen("hubScreen"));
-});
+/* ---------- LETTER ---------- */
+const letter=`Dear Love,
 
-/* ---------- LETTER TYPING ---------- */
-const letterText="Dear Love,\n\nI just wanted to remind you how much you mean to me. Every day with you is a gift, and I cherish every moment we share.\n\nLove always, Your Valentine ❤️";
-const letterElement=document.getElementById("letterText");
-let letterIndex=0;
-function startLetter(){letterElement.textContent="";letterIndex=0;typeLetter();}
-function typeLetter(){if(letterIndex<letterText.length){letterElement.textContent+=letterText[letterIndex];letterIndex++;setTimeout(typeLetter,50);}}
+Every moment with you feels like home.
+This is just a small reminder of how much you mean to me.
 
-/* ---------- TOP 5 SONG PLAYER ---------- */
-const songButtons=document.querySelectorAll(".songBtn");
-const songPlayerScreen=document.getElementById("songPlayerScreen");
-const audioPlayer=document.getElementById("audioPlayer");
-const songCover=document.getElementById("songCover");
-const songTitle=document.getElementById("songTitle");
-let currentSongIndex=0;
+Love always ❤️`;
+let li=0;
+function startLetter(){
+  letterText.textContent="";
+  li=0;
+  (function type(){
+    if(li<letter.length){
+      letterText.textContent+=letter[li++];
+      setTimeout(type,45);
+    }
+  })();
+}
+letterBtn.onclick=()=>{showScreen("letterScreen");startLetter();};
 
-songButtons.forEach((btn,index)=>{
-  btn.addEventListener("click",()=>{
+/* ---------- SONG PLAYER ---------- */
+const songBtns=document.querySelectorAll(".songBtn");
+let currentSong=0;
+
+songBtns.forEach((b,i)=>{
+  b.onclick=()=>{
+    currentSong=i;
+    loadSong();
     showScreen("songPlayerScreen");
-    audioPlayer.src=btn.dataset.song;
-    songCover.src=btn.dataset.cover;
-    songTitle.textContent=btn.textContent;
-    currentSongIndex=index;
-  });
+    audioPlayer.play();
+  };
 });
 
-document.getElementById("playBtn").addEventListener("click",()=>{audioPlayer.paused?audioPlayer.play():audioPlayer.pause();});
-document.getElementById("prevBtn").addEventListener("click",()=>{
-  currentSongIndex=(currentSongIndex-1+songButtons.length)%songButtons.length;
-  loadSong(currentSongIndex);
-});
-document.getElementById("nextBtn").addEventListener("click",()=>{
-  currentSongIndex=(currentSongIndex+1)%songButtons.length;
-  loadSong(currentSongIndex);
-});
-function loadSong(idx){
-  const btn=songButtons[idx];
-  audioPlayer.src=btn.dataset.song;
-  songCover.src=btn.dataset.cover;
-  songTitle.textContent=btn.textContent;
-  audioPlayer.pause();
+function loadSong(){
+  const b=songBtns[currentSong];
+  audioPlayer.src=b.dataset.song;
+  songCover.src=b.dataset.cover;
+  songTitle.textContent=b.textContent;
 }
 
-/* ---------- INTERACTIVE SNAKE DRAG GAME ---------- */
-function startSnakeDrag(){
-  const canvas=document.getElementById("snakeCanvas");
-  canvas.width=window.innerWidth-40;
-  canvas.height=window.innerHeight-100;
+playBtn.onclick=()=>audioPlayer.paused?audioPlayer.play():audioPlayer.pause();
+prevBtn.onclick=()=>{currentSong=(currentSong-1+songBtns.length)%songBtns.length;loadSong();audioPlayer.play();};
+nextBtn.onclick=()=>{currentSong=(currentSong+1)%songBtns.length;loadSong();audioPlayer.play();};
+
+/* ---------- SNAKE GAME ---------- */
+gameBtn.onclick=()=>{
+  showScreen("gameScreen");
+  startSnake();
+};
+
+function startSnake(){
+  const canvas=snakeCanvas;
+  canvas.width=innerWidth-40;
+  canvas.height=innerHeight-120;
   const ctx=canvas.getContext("2d");
-  const scale=20;
-  const snake=[];
-  let dragging=false;
 
-  const pathPoints=[
-    {x:50,y:50},{x:50,y:150},{x:50,y:250}, // I
-    {x:100,y:50},{x:200,y:50},{x:200,y:100},{x:200,y:150},{x:200,y:200},{x:200,y:250}, // L
-    {x:220,y:50},{x:280,y:50},{x:280,y:150}, // O
-    {x:300,y:50},{x:360,y:50},{x:360,y:150}, // V
-    {x:380,y:50},{x:440,y:50},{x:380,y:150},{x:440,y:150}, // E
-    {x:460,y:50},{x:520,y:50},{x:460,y:150},{x:520,y:150}, // Y
-    {x:540,y:50},{x:540,y:150},{x:540,y:250}, // O
-    {x:560,y:50},{x:620,y:50},{x:620,y:150}  // U
-  ];
+  let snake=[{x:canvas.width/2,y:canvas.height/2}];
+  let target={...snake[0]};
 
-  function draw(){
-    ctx.fillStyle="#000";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+  function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    snake[0].x+=(target.x-snake[0].x)*.2;
+    snake[0].y+=(target.y-snake[0].y)*.2;
+
+    for(let i=1;i<snake.length;i++){
+      snake[i].x+=(snake[i-1].x-snake[i].x)*.3;
+      snake[i].y+=(snake[i-1].y-snake[i].y)*.3;
+    }
+
+    if(snake.length<30) snake.push({...snake.at(-1)});
+
     ctx.fillStyle="#c77dff";
     snake.forEach(s=>{
       ctx.beginPath();
-      ctx.arc(s.x,s.y,scale/2,0,Math.PI*2);
+      ctx.arc(s.x,s.y,8,0,Math.PI*2);
       ctx.fill();
     });
-    ctx.fillStyle="#ff99ff";
-    ctx.font="20px 'Press Start 2P'";
-    pathPoints.forEach((p,i)=>ctx.fillText("I LOVE YOU"[i%9],p.x,p.y));
-  }
 
-  function update(){
-    if(dragging && snake.length<pathPoints.length){
-      snake.push(pathPoints[snake.length]);
-    }
+    requestAnimationFrame(loop);
   }
-
-  function loop(){update();draw();requestAnimationFrame(loop);}
   loop();
 
-  canvas.addEventListener("pointerdown",()=>{dragging=true;});
-  canvas.addEventListener("pointerup",()=>{dragging=false;});
+  canvas.onpointermove=e=>{
+    const r=canvas.getBoundingClientRect();
+    target.x=e.clientX-r.left;
+    target.y=e.clientY-r.top;
+  };
 }
 </script>
+
 </body>
 </html>
+
