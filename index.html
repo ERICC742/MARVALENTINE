@@ -2,275 +2,202 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine’s Day 2026</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
+<title>Pac-Man Neon Hearts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <style>
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Press Start 2P', cursive;}
-body {
-  background: radial-gradient(circle,#1a0033,#000);
-  color:#c77dff;
-  height:100vh;
-  overflow:hidden;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  touch-action: none;
 }
 
-/* ---------- SCREENS ---------- */
-.screen {
-  position:absolute;
-  inset:0;
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-.screen.active {display:flex;animation:fade .6s ease forwards;}
-@keyframes fade {from{opacity:0}to{opacity:1}}
-
-.title {
-  font-size:1.3rem;
-  margin-bottom:20px;
-  text-shadow:0 0 12px #9d4edd,0 0 30px #7b2cbf;
-}
-
-button {
-  background:transparent;
-  color:#fff;
-  border:3px solid #c77dff;
-  padding:12px 24px;
-  font-size:.8rem;
-  margin:10px 0;
-  cursor:pointer;
-  box-shadow:0 0 15px #9d4edd;
-}
-button:active {transform:scale(.95)}
-
-#startBtn {animation:glowPulse 2s infinite;}
-@keyframes glowPulse {
-  0%{box-shadow:0 0 12px #7b2cbf}
-  100%{box-shadow:0 0 35px #e0aaff}
-}
-
-/* ---------- MEMORIES ---------- */
-#memoriesScreen .photos {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:24px;
-}
-#memoriesScreen img {
-  width:150px;height:200px;object-fit:cover;
-  background:#fff;padding:10px 10px 30px;
-  box-shadow:0 8px 20px rgba(199,125,255,.35);
-}
-
-/* ---------- MODAL ---------- */
-#photoModal {
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;justify-content:center;align-items:center;
-}
-#photoModal.active{display:flex;}
-#photoModal img{max-width:80%;border:4px solid #c77dff}
-
-/* ---------- LETTER ---------- */
-#letterScreen p {
-  width:80%;
-  max-width:400px;
-  font-size:.7rem;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-
-/* ---------- PACMAN ---------- */
-#pacmanCanvas {
-  background:#000;
-  border:3px solid #c77dff;
-  touch-action:none;
-}
-
-/* ---------- MOBILE CONTROLS ---------- */
-.pac-controls {
-  display:grid;
-  grid-template-columns:70px 70px 70px;
-  gap:10px;
-  margin-top:15px;
-}
-.pac-controls button {
-  font-size:1.2rem;
-  padding:12px;
+canvas {
+  display: block;
 }
 </style>
 </head>
-
 <body>
 
-<audio id="bgMusic" src="music.mp3" loop playsinline></audio>
-
-<!-- START -->
-<div id="startScreen" class="screen active">
-  <div class="title">VALENTINE’S DAY 2026</div>
-  <button id="startBtn">START</button>
-</div>
-
-<!-- PLAYER SELECT -->
-<div id="playerSelect" class="screen">
-  <button id="onePlayerBtn">1 PLAYER</button>
-  <button id="twoPlayerBtn">2 PLAYERS</button>
-</div>
-
-<!-- LOCKED -->
-<div id="lockedScreen" class="screen">
-  <div class="title">ACCESS DENIED</div>
-  <button id="returnBtn">RETURN</button>
-</div>
-
-<!-- HUB -->
-<div id="hubScreen" class="screen">
-  <button id="memoriesBtn">MEMORIES</button>
-  <button id="topSongsBtn">TOP 5 SONGS</button>
-  <button id="letterBtn">A LETTER</button>
-  <button id="gameBtn">GAME</button>
-  <button id="videoBtn">VIDEO</button>
-</div>
-
-<!-- MEMORIES -->
-<div id="memoriesScreen" class="screen">
-  <div class="title">MEMORIES</div>
-  <div class="photos">
-    <img src="photo1.jpeg"><img src="photo2.jpeg">
-    <img src="photo3.jpeg"><img src="photo4.jpeg">
-    <img src="photo5.jpeg"><img src="photo6.jpeg">
-    <img src="photo7.jpeg"><img src="photo8.jpeg">
-  </div>
-  <button class="backBtn">RETURN</button>
-</div>
-
-<div id="photoModal"><img id="modalImg"></div>
-
-<!-- LETTER -->
-<div id="letterScreen" class="screen">
-  <div class="title">A LETTER</div>
-  <p id="letterText"></p>
-  <button class="backBtn">RETURN</button>
-</div>
-
-<!-- GAME (PAC-MAN) -->
-<div id="gameScreen" class="screen">
-  <div class="title">PAC-MAN 💚</div>
-  <canvas id="pacmanCanvas" width="300" height="300"></canvas>
-  <div class="pac-controls">
-    <div></div><button onclick="setDir(0,-1)">⬆️</button><div></div>
-    <button onclick="setDir(-1,0)">⬅️</button>
-    <button onclick="setDir(0,1)">⬇️</button>
-    <button onclick="setDir(1,0)">➡️</button>
-  </div>
-  <button class="backBtn">RETURN</button>
-</div>
-
-<!-- VIDEO -->
-<div id="videoScreen" class="screen">
-  <div class="title">VIDEO</div>
-  <video src="valentine_video.mp4" controls width="300"></video>
-  <button class="backBtn">RETURN</button>
-</div>
+<canvas id="game"></canvas>
 
 <script>
-/* ---------- SCREEN CONTROL ---------- */
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
+window.addEventListener("resize", resize);
+resize();
 
-/* ---------- MUSIC ---------- */
-const bgMusic=document.getElementById("bgMusic");
-startBtn.onclick=()=>{showScreen("playerSelect");bgMusic.play().catch(()=>{});}
-onePlayerBtn.onclick=()=>showScreen("lockedScreen");
-returnBtn.onclick=()=>showScreen("playerSelect");
-twoPlayerBtn.onclick=()=>showScreen("hubScreen");
+/* GRID */
+const cols = 19;
+const rows = 21;
+let tile = Math.min(canvas.width / cols, canvas.height / rows);
 
-/* ---------- HUB ---------- */
-memoriesBtn.onclick=()=>showScreen("memoriesScreen");
-letterBtn.onclick=()=>{showScreen("letterScreen");startLetter();}
-gameBtn.onclick=()=>{showScreen("gameScreen");startPacman();}
-videoBtn.onclick=()=>showScreen("videoScreen");
+const map = [
+  "###################",
+  "#........#........#",
+  "#.####.###.#.###.###",
+  "#.................#",
+  "#.####.#.#####.#.##",
+  "#......#...#.....#",
+  "######.###.#.###.###",
+  "#........#........#",
+  "#.####.###.#.###.###",
+  "#................#",
+  "###################"
+];
 
-document.querySelectorAll(".backBtn").forEach(b=>{
-  b.onclick=()=>showScreen("hubScreen");
+let pacman = { x: 1, y: 1, dx: 0, dy: 0 };
+
+const ghosts = [
+  { x: 9, y: 5, color: "#ff0000" }, // Blinky
+  { x: 8, y: 5, color: "#ffb8ff" }, // Pinky
+  { x: 10, y: 5, color: "#00ffff" }, // Inky
+  { x: 9, y: 6, color: "#ffb852" }  // Clyde
+];
+
+let pellets = [];
+map.forEach((r,y)=>r.split("").forEach((c,x)=>{
+  if(c===".") pellets.push({x,y});
+}));
+
+/* TOUCH CONTROLS — SCREEN QUADRANTS */
+canvas.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  const x = t.clientX;
+  const y = t.clientY;
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+  if (Math.abs(x - cx) > Math.abs(y - cy)) {
+    pacman.dx = x > cx ? 1 : -1;
+    pacman.dy = 0;
+  } else {
+    pacman.dy = y > cy ? 1 : -1;
+    pacman.dx = 0;
+  }
 });
 
-/* ---------- LETTER ---------- */
-const letter=`Dear Love,
-
-Every moment with you feels like home.
-This is just a small reminder of how much you mean to me.
-
-Love always ❤️`;
-let li=0;
-function startLetter(){
-  letterText.textContent="";
-  li=0;
-  (function type(){
-    if(li<letter.length){
-      letterText.textContent+=letter[li++];
-      setTimeout(type,40);
-    }
-  })();
+/* DRAWING */
+function drawMaze() {
+  ctx.fillStyle = "#7b2cff";
+  map.forEach((r,y)=>r.split("").forEach((c,x)=>{
+    if(c==="#") ctx.fillRect(x*tile,y*tile,tile,tile);
+  }));
 }
 
-/* ---------- PAC-MAN GAME ---------- */
-let pacLoop;
-function startPacman(){
-  const c=pacmanCanvas,ctx=c.getContext("2d");
-  const tile=15;
-  const map=[
-    "####################",
-    "#........##........#",
-    "#.####.###..###.####.#",
-    "#..................#",
-    "#.####.#.######.#.##",
-    "#......#....##....#",
-    "######.####..####.##",
-    "#..................#",
-    "#.####.##.####.##.##",
-    "#......##....##....#",
-    "####################"
-  ];
-  let pac={x:1,y:1,dx:0,dy:0};
-  let pellets=[];
-  map.forEach((r,y)=>r.split("").forEach((c,x)=>c==="."&&pellets.push({x,y})));
-
-  function heart(x,y){
-    ctx.fillStyle="#39ff14";
-    ctx.beginPath();
-    ctx.arc(x,y,3,0,Math.PI*2);
-    ctx.fill();
-  }
-
-  function loop(){
-    ctx.clearRect(0,0,c.width,c.height);
-    ctx.fillStyle="#9d4edd";
-    map.forEach((r,y)=>r.split("").forEach((v,x)=>{
-      if(v==="#")ctx.fillRect(x*tile,y*tile,tile,tile);
-    }));
-    pellets=pellets.filter(p=>{
-      heart(p.x*tile+7,p.y*tile+7);
-      return !(p.x===pac.x&&p.y===pac.y);
-    });
-    if(map[pac.y+pac.dy]?.[pac.x+pac.dx]!=="#"){
-      pac.x+=pac.dx;pac.y+=pac.dy;
-    }
-    ctx.beginPath();
-    ctx.arc(pac.x*tile+7,pac.y*tile+7,7,.25*Math.PI,1.75*Math.PI);
-    ctx.fillStyle="gold";
-    ctx.fill();
-    pacLoop=requestAnimationFrame(loop);
-  }
-  loop();
+function drawHeart(x,y,p) {
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(0.5 + p, 0.5 + p);
+  ctx.beginPath();
+  ctx.moveTo(0,3);
+  ctx.bezierCurveTo(-4,-2,-8,3,0,10);
+  ctx.bezierCurveTo(8,3,4,-2,0,3);
+  ctx.fillStyle = "#39ff14";
+  ctx.shadowColor = "#39ff14";
+  ctx.shadowBlur = 15;
+  ctx.fill();
+  ctx.restore();
 }
-function setDir(x,y){window.event?.preventDefault();pacDir={x,y};}
+
+function drawPacman() {
+  ctx.beginPath();
+  ctx.arc(
+    pacman.x*tile+tile/2,
+    pacman.y*tile+tile/2,
+    tile/2.3,
+    0.25*Math.PI,
+    1.75*Math.PI
+  );
+  ctx.lineTo(pacman.x*tile+tile/2,pacman.y*tile+tile/2);
+  ctx.fillStyle = "#ffd700";
+  ctx.shadowBlur = 10;
+  ctx.shadowColor = "#ffd700";
+  ctx.fill();
+}
+
+function drawGhost(g) {
+  const x = g.x*tile+tile/2;
+  const y = g.y*tile+tile/2;
+
+  ctx.beginPath();
+  ctx.arc(x, y, tile/2.2, Math.PI, 0);
+  ctx.lineTo(x+tile/2.2, y+tile/2.2);
+  ctx.lineTo(x-tile/2.2, y+tile/2.2);
+  ctx.closePath();
+  ctx.fillStyle = g.color;
+  ctx.shadowColor = g.color;
+  ctx.shadowBlur = 12;
+  ctx.fill();
+}
+
+/* MOVEMENT */
+function canMove(x,y) {
+  return map[y] && map[y][x] !== "#";
+}
+
+function movePacman() {
+  const nx = pacman.x + pacman.dx;
+  const ny = pacman.y + pacman.dy;
+  if (canMove(nx,ny)) {
+    pacman.x = nx;
+    pacman.y = ny;
+  }
+}
+
+function moveGhost(g) {
+  const dx = pacman.x - g.x;
+  const dy = pacman.y - g.y;
+
+  let options = [];
+  if (canMove(g.x+1,g.y)) options.push({dx:1,dy:0});
+  if (canMove(g.x-1,g.y)) options.push({dx:-1,dy:0});
+  if (canMove(g.x,g.y+1)) options.push({dx:0,dy:1});
+  if (canMove(g.x,g.y-1)) options.push({dx:0,dy:-1});
+
+  options.sort((a,b)=>
+    Math.hypot(dx-a.dx,dy-a.dy)-Math.hypot(dx-b.dx,dy-b.dy)
+  );
+
+  if(options[0]) {
+    g.x += options[0].dx;
+    g.y += options[0].dy;
+  }
+}
+
+/* GAME LOOP */
+let pulse = 0;
+function loop() {
+  pulse += 0.02;
+  tile = Math.min(canvas.width / cols, canvas.height / rows);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  drawMaze();
+
+  pellets = pellets.filter(p=>{
+    drawHeart(p.x*tile+tile/2,p.y*tile+tile/2,Math.sin(pulse)*0.1);
+    return !(p.x===pacman.x && p.y===pacman.y);
+  });
+
+  movePacman();
+  drawPacman();
+
+  ghosts.forEach(g=>{
+    moveGhost(g);
+    drawGhost(g);
+  });
+
+  requestAnimationFrame(loop);
+}
+loop();
 </script>
-
 </body>
 </html>
+
